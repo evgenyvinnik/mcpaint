@@ -59,7 +59,7 @@
 1. Establish project-wide TypeScript or JSDoc conventions for React components. The codebase already uses JSDoc for types (see `src/app.js`), so decide whether to continue with `// @ts-check` and `.jsx` files or move to `.tsx` with a `tsconfig` aligned to React.【F:src/app.js†L1-L19】
 2. Introduce React and React DOM (`npm install react react-dom`) along with supporting typings if TypeScript is adopted.
 3. Decide on a state management strategy. The existing code uses a mixture of mutable globals (e.g., `selected_tool`, `palette`) and custom event emitters (`$G`). Catalog these in a migration spreadsheet so each global has a React state counterpart or context provider planned.【F:src/app.js†L1-L63】【F:src/functions.js†L180-L240】
-4. Create a React root entry (`src/main.jsx`) that renders into the body or a dedicated `<div id="root">`. For coexistence with legacy DOM during the transition, mount React inside a container and let legacy scripts populate the rest until replaced.
+4. Create a React root entry (`src/main.js`) that renders into the body or a dedicated `<div id="root">`. For coexistence with legacy DOM during the transition, mount React inside a container and let legacy scripts populate the rest until replaced.
 
 ### 2. Incremental componentization strategy
 1. Map existing UI modules to candidate React components:
@@ -97,3 +97,6 @@
 3. Provide developer onboarding docs covering the React architecture, state management choices, and coding conventions so contributors can align with the new system.
 
 This plan should guide the project through adopting Vite for modern tooling and subsequently re-platforming the UI onto React with minimal service disruption.
+
+## Progress Log
+- 2025-10-06: Introduced Vite-driven build setup, consolidated legacy script load order into `src/main.js`, mounted a no-op React bridge in `src/react`, and swapped `index.html` to bootstrap through the new entry without altering UI behavior.

@@ -1076,7 +1076,25 @@
 		// 	current_language = prev_language;
 		// });
 		const src = `localization/${language}/localizations.js`;
-		document.write(`<script src="${src}"></${""/*(avoiding ending script tag if inlined in HTML)*/}script>`);
+		if (document.readyState === "loading") {
+			document.write(`<script src="${src}"></${""/*(avoiding ending script tag if inlined in HTML)*/}script>`);
+		} else {
+			const script = document.createElement("script");
+			script.src = src;
+			// Keep execution order deterministic relative to other injected localization files.
+			script.async = false;
+			script.onerror = (event) => {
+				const error = event?.error || event;
+				const message = `Failed to load localizations from ${src}.`;
+				if (typeof show_error_message === "function") {
+					show_error_message(message, error);
+				} else {
+					// eslint-disable-next-line no-console
+					console.error(message, error);
+				}
+			};
+			document.head.append(script);
+		}
 	}
 	// JSONP callback in the localization files
 	window.loaded_localizations = function loaded_localizations(language, mapping) {
