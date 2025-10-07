@@ -73,7 +73,7 @@
 	<meta name="twitter:site" content="@isaiahodhner">
 	<meta name="twitter:creator" content="@isaiahodhner">
 
-	<script src="src/error-handling-basic.js"></script>
+	<script data-vite-ignore src="src/error-handling-basic.js"></script>
 	<script type="module" src="src/theme.js"></script>
 </head>
 
@@ -1370,27 +1370,27 @@
 	</div>
 
 	<!-- Note: no CDNs, even with fallback, as the fallback is too complicated to handle with CSP. -->
-	<script src="lib/jquery-3.4.1.min.js"></script>
-	<script src="lib/gif.js/gif.js"></script>
+	<script data-vite-ignore src="lib/jquery-3.4.1.min.js"></script>
+	<script data-vite-ignore src="lib/gif.js/gif.js"></script>
 	<!-- pako is used by UPNG.js and UTIF.js -->
-	<script src="lib/pako-2.0.3.min.js"></script>
-	<script src="lib/UPNG.js"></script>
-	<script src="lib/UTIF.js"></script>
-	<script src="lib/bmp.js"></script>
-	<script src="lib/pdf.js/build/pdf.js"></script>
-	<script src="lib/anypalette-0.6.0.js"></script>
-	<script src="lib/FileSaver.js"></script>
-	<script src="lib/font-detective.js"></script>
-	<script src="lib/libtess.min.js"></script>
-	<script src="lib/tracky-mouse/core/tracky-mouse.js"></script>
-	<script src="lib/os-gui/parse-theme.js"></script>
-	<script src="lib/os-gui/$Window.js"></script>
-	<script src="lib/os-gui/MenuBar.js"></script>
-	<script src="lib/imagetracer_v1.2.5.js"></script>
+	<script data-vite-ignore src="lib/pako-2.0.3.min.js"></script>
+	<script data-vite-ignore src="lib/UPNG.js"></script>
+	<script data-vite-ignore src="lib/UTIF.js"></script>
+	<script data-vite-ignore src="lib/bmp.js"></script>
+	<script data-vite-ignore src="lib/pdf.js/build/pdf.js"></script>
+	<script data-vite-ignore src="lib/anypalette-0.6.0.js"></script>
+	<script data-vite-ignore src="lib/FileSaver.js"></script>
+	<script data-vite-ignore src="lib/font-detective.js"></script>
+	<script data-vite-ignore src="lib/libtess.min.js"></script>
+	<script data-vite-ignore src="lib/tracky-mouse/core/tracky-mouse.js"></script>
+	<script data-vite-ignore src="lib/os-gui/parse-theme.js"></script>
+	<script data-vite-ignore src="lib/os-gui/$Window.js"></script>
+	<script data-vite-ignore src="lib/os-gui/MenuBar.js"></script>
+	<script data-vite-ignore src="lib/imagetracer_v1.2.5.js"></script>
 
 	<!-- must not be async/deferred, as it uses document.write(); and must come before other app code which uses localization functions -->
 	<!-- (also depends on msgbox.js and thus os-gui.js, but not initially) -->
-	<script src="src/app-localization.js"></script>
+	<script data-vite-ignore src="src/app-localization.js"></script>
 
 	<!-- Scripts that are not yet transitioned to ES Modules are marked as "defer"
 	so that the ES Modules (which are implicitly deferred) can still export globals to be consumed by the non-module scripts,
@@ -1428,7 +1428,7 @@
 	<script type="module" src="src/menus.js"></script>
 	<script type="module" src="src/speech-recognition.js"></script>
 	<script type="module" src="src/eye-gaze-mode.js"></script>
-	<script defer src="src/app-state.js"></script>
+	<script data-vite-ignore defer src="src/app-state.js"></script>
 	<script type="module" src="src/app.js"></script>
 	<script type="module" src="src/sessions.js"></script>
 	<script type="module" src="src/konami.js"></script>

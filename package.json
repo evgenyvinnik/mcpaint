@@ -109,7 +109,9 @@
     "os-gui": "0.7.3",
     "rtlcss": "^4.1.1",
     "start-server-and-test": "^2.0.3",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "vite": "^5.4.20",
+    "vite-plugin-static-copy": "^1.0.5"
   },
   "scripts": {
     "electron:start": "electron-forge start",
@@ -126,11 +128,12 @@
     "watch-css": "onchange --initial --poll 100 \"styles/layout.css\" \"lib/os-gui/build/layout.css\" \"lib/98.css/98.custom-build.css\" -- npm run build-css",
     "update-localization": "node ./localization/preprocess.js",
     "sync-os-gui": "node ./sync-package.js os-gui && git apply --ignore-whitespace ./lib/os-gui.patch && npm run build-css",
-    "dev": "run-p watch-css dev:start-server",
-    "dev:start-server": "live-server --port=1999 --ignorePattern=\"(node_modules|cypress|out)[/\\\\\\\\]|package\\.json|cypress\\.json\"",
-    "dev:start-server:NOTE": "@XXX: the octuple backlash ends up meaning a single backslash on Linux, two backslashes on Windows. In this case it's fine because it's in a regexp character class so the extra is redundant and doesn't cause an error.",
-    "test:start-server": "live-server --port=11822 --no-browser --ignorePattern=\"(node_modules|cypress|out)[/\\\\\\\\]|package\\.json|cypress\\.json\"",
-    "test:start-server:NOTE": "@XXX: the octuple backlash ends up meaning a single backslash on Linux, two backslashes on Windows. In this case it's fine because it's in a regexp character class so the extra is redundant and doesn't cause an error.",
+    "dev": "run-p watch-css dev:vite",
+    "dev:vite": "vite --host 0.0.0.0 --port=1999",
+    "build": "npm-run-all build-css build:vite",
+    "build:vite": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port=4173",
+    "test:start-server": "vite --host 0.0.0.0 --port=11822",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:accept": "cypress run --env updateSnapshots=true",
