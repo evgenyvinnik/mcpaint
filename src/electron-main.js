@@ -549,22 +549,60 @@ const createWindow = () => {
 			// Note: { scale: "center" } is only supported on macOS.
 			// I worked around this by providing an image with a transparent margin on other platforms,
 			// in setWallpaperCentered.
-			return new Promise((resolve, _reject) => {
-				require("wallpaper").set(image_path, { scale: "center" }, (error) => {
-					if (error) {
-						resolve({ responseCode: "SET_WALLPAPER_FAILED", error });
-					} else {
-						resolve({ responseCode: "SUCCESS" });
+			try {
+				let wallpaperModule;
+				try {
+					wallpaperModule = await import("wallpaper");
+				} catch (importError) {
+					// Fallback for CommonJS builds that may still ship in some environments.
+					wallpaperModule = require("wallpaper");
+				}
+
+				const moduleCandidates = [
+					wallpaperModule?.set,
+					wallpaperModule?.default?.set,
+					wallpaperModule?.default,
+					wallpaperModule,
+				];
+
+				const setWallpaper = moduleCandidates.find((candidate) => typeof candidate === "function");
+
+				if (!setWallpaper) {
+					throw new Error("Unable to resolve wallpaper#set function");
+				}
+
+				await new Promise((resolve, reject) => {
+					let settled = false;
+					const finish = (error) => {
+						if (settled) {
+							return;
+						}
+						settled = true;
+						if (error) {
+							reject(error);
+						} else {
+							resolve();
+						}
+					};
+
+					try {
+						const maybePromise = setWallpaper(image_path, { scale: "center" }, finish);
+						if (maybePromise && typeof maybePromise.then === "function") {
+							maybePromise.then(() => finish()).catch((error) => finish(error));
+						} else if (setWallpaper.length < 3) {
+							// Handle synchronous implementations that don't expect a callback.
+							finish();
+						}
+					} catch (error) {
+						finish(error);
 					}
 				});
-			});
-			// Newer promise-based wallpaper API that I can't import:
-			// try {
-			// 	await setWallpaper(image_path, { scale: "center" });
-			// } catch (error) {
-			// 	return { responseCode: "SET_WALLPAPER_FAILED", error };
-			// }
-			// return { responseCode: "SUCCESS" };
+
+				return { responseCode: "SUCCESS" };
+			} catch (error) {
+				console.error("Error setting wallpaper with wallpaper module:", error);
+				return { responseCode: "SET_WALLPAPER_FAILED", error };
+			}
 		}
 	});
 }
