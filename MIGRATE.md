@@ -19,7 +19,7 @@
    - Aliases for frequently imported modules if helpful (e.g., resolve `$` prefixed files).
    - Static asset directories (e.g., move `styles`, `images`, `localization`, `lib` into `public` or use copy plugins).
 2. Update `package.json` scripts to add `vite`-based dev (`vite dev`) and build commands, keeping existing scripts temporarily for fallback until parity is proven.【F:package.json†L108-L139】
-3. Ensure Electron integration: since the Electron main process still loads from `src/electron-main.js`, keep Electron Forge scripts but adjust renderer paths to point at the Vite dev server in development and to Vite’s `dist` output in production.
+3. Remove legacy desktop integration details that referenced `src/electron-main.js` so Vite can become the only entrypoint.
 
 ### 3. Migrate HTML entry to Vite semantics
 1. Convert `index.html` into a Vite entry template:
@@ -49,7 +49,7 @@
 3. Introduce linting or TypeScript integrations Vite supports (e.g., ESLint plugin, `tsconfig` path mapping) to catch module resolution issues early.
 
 ### 6. Hardening before React work
-1. Verify production build output matches expectations by deploying Vite’s `dist` to a staging environment or running the Electron app against the generated files.
+1. Verify production build output matches expectations by deploying Vite’s `dist` to a staging environment.
 2. Monitor bundle size and module chunks; consider code-splitting heavy features (e.g., `speech-recognition.js`, `eye-gaze-mode.js`) using dynamic imports to preserve load performance.
 3. Freeze the migration once parity is confirmed so React work can start from a stable baseline.
 

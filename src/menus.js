@@ -23,7 +23,7 @@ const menus = {
 	[localize("&File")]: [
 		{
 			label: localize("&New"),
-			...shortcut(window.is_electron_app ? "Ctrl+N" : "Ctrl+Alt+N"), // Ctrl+N opens a new browser window
+                        ...shortcut("Ctrl+Alt+N"), // Ctrl+N opens a new browser window
 			speech_recognition: [
 				"new", "new file", "new document", "create new document", "create a new document", "start new document", "start a new document",
 			],
@@ -222,7 +222,7 @@ const menus = {
 		MENU_DIVIDER,
 		{
 			label: localize("E&xit"),
-			...shortcut(window.is_electron_app ? "Alt+F4" : ""), // Alt+F4 closes the browser window (in most window managers)
+                    ...shortcut(""), // Alt+F4 closes the browser window (in most window managers)
 			speech_recognition: [
 				"exit application", "exit paint", "close paint window",
 			],
@@ -252,7 +252,7 @@ const menus = {
 						// Note that e.g. (()=>{}).bind().toString() gives "function () { [native code] }"
 						// so the window.close() must not use bind() (not that that's common practice anyway)
 						const close_overridden = frameElement && window.close && !/\{\s*\[native code\]\s*\}/.test(window.close.toString());
-						if (close_overridden || window.is_electron_app) {
+                                            if (close_overridden) {
 							window.close();
 							return;
 						}
@@ -390,7 +390,7 @@ const menus = {
 	[localize("&View")]: [
 		{
 			label: localize("&Tool Box"),
-			...shortcut(window.is_electron_app ? "Ctrl+T" : ""), // Ctrl+T opens a new browser tab, Ctrl+Alt+T opens a Terminal in Ubuntu, and Ctrl+Shift+Alt+T feels silly.
+                    ...shortcut(""), // Ctrl+T opens a new browser tab, Ctrl+Alt+T opens a Terminal in Ubuntu, and Ctrl+Shift+Alt+T feels silly.
 			speech_recognition: [
 				"toggle tool box", "toggle tools box", "toggle toolbox", "toggle tool palette", "toggle tools palette",
 				// @TODO: hide/show
@@ -455,7 +455,7 @@ const menus = {
 			submenu: [
 				{
 					label: localize("&Normal Size"),
-					...shortcut(window.is_electron_app ? "Ctrl+PgUp" : ""), // Ctrl+PageUp cycles thru browser tabs in Chrome & Firefox; can be overridden in Chrome in fullscreen only
+                                    ...shortcut(""), // Ctrl+PageUp cycles thru browser tabs in Chrome & Firefox; can be overridden in Chrome in fullscreen only
 					speech_recognition: [
 						"reset zoom", "zoom to normal size",
 						"zoom to 100%", "set zoom to 100%", "set zoom 100%",
@@ -471,7 +471,7 @@ const menus = {
 				},
 				{
 					label: localize("&Large Size"),
-					...shortcut(window.is_electron_app ? "Ctrl+PgDn" : ""), // Ctrl+PageDown cycles thru browser tabs in Chrome & Firefox; can be overridden in Chrome in fullscreen only
+                                    ...shortcut(""), // Ctrl+PageDown cycles thru browser tabs in Chrome & Firefox; can be overridden in Chrome in fullscreen only
 					speech_recognition: [
 						"zoom to large size",
 						"zoom to 400%", "set zoom to 400%", "set zoom 400%",
@@ -609,7 +609,7 @@ const menus = {
 		// @TODO: speech recognition: terms that apply to selection
 		{
 			label: localize("&Flip/Rotate"),
-			...shortcut((window.is_electron_app && !window.electron_is_dev) ? "Ctrl+R" : "Ctrl+Alt+R"), // Ctrl+R reloads the browser tab (or Electron window in dev mode via electron-debug)
+                    ...shortcut("Ctrl+Alt+R"), // Ctrl+R reloads the browser tab
 			speech_recognition: [
 				"flip",
 				"rotate",
@@ -621,7 +621,7 @@ const menus = {
 		},
 		{
 			label: localize("&Stretch/Skew"),
-			...shortcut(window.is_electron_app ? "Ctrl+W" : "Ctrl+Alt+W"), // Ctrl+W closes the browser tab
+                    ...shortcut("Ctrl+Alt+W"), // Ctrl+W closes the browser tab
 			speech_recognition: [
 				"stretch", "scale", "resize image",
 				"skew",
@@ -660,7 +660,7 @@ const menus = {
 		},
 		{
 			label: localize("&Clear Image"),
-			...shortcut((window.is_electron_app || !looksLikeChrome) ? "Ctrl+Shift+N" : ""), // Ctrl+Shift+N opens incognito window in chrome
+                    ...shortcut(!looksLikeChrome ? "Ctrl+Shift+N" : ""), // Ctrl+Shift+N opens incognito window in chrome
 			speech_recognition: [
 				"clear image", "clear canvas", "clear picture", "clear page", "clear drawing",
 				// @TODO: erase?
@@ -1435,10 +1435,10 @@ export { menus };
 
 /**
  * Expands a shortcut label into an object with the label and a corresponding ARIA key shortcuts value.
- * Could handle "CtrlOrCmd" like Electron does, here, or just treat "Ctrl" as control or command.
+ * Could handle "CtrlOrCmd" like native wrappers do, here, or just treat "Ctrl" as control or command.
  * Of course it would be more ergonomic if OS-GUI.js handled this sort of thing,
- * and I have thought about rewriting the OS-GUI API to mimic Electron's.
- * I also have some munging logic in electron-main.js related to this.
+ * and I have thought about rewriting the OS-GUI API to mimic that behavior.
+ * I used to have some munging logic in the desktop wrapper related to this.
  * @param {string} shortcutLabel
  * @returns {{shortcutLabel?: string, ariaKeyShortcuts?: string}}
  */

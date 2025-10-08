@@ -60,10 +60,10 @@ const getMimeType = (format) => "mimeType" in format ? format.mimeType : `applic
  * This API may be removed at any time (and perhaps replaced by something based around postMessage)
  * The API is documented in the README.md file.
  */
-window.systemHooks = window.systemHooks || {};
+window.systemHooks = window.systemHooks || /** @type {SystemHooks} */({});
 /** @type {SystemHooks} */
 window.systemHookDefaults = {
-	// named to be distinct from various platform APIs (showSaveFilePicker, saveAs, electron's showSaveDialog; and saveFile is too ambiguous)
+        // named to be distinct from various platform APIs (showSaveFilePicker, saveAs, native wrappers' showSaveDialog; and saveFile is too ambiguous)
 	// could call it saveFileAs maybe but then it'd be weird that you don't pass in the file directly
 	showSaveFileDialog: async ({ formats, defaultFileName, defaultPath, defaultFileFormatID, getBlob, savedCallbackUnreliable, dialogTitle }) => {
 
@@ -767,11 +767,6 @@ for (const [menu_item, menu_item_element] of traverse_menu(menus["E&xtras"], ext
 }
 $("<style>").text(emoji_css).appendTo(menu_document.head);
 
-// Electron menu integration
-if (window.is_electron_app) {
-	window.setMenus(menus);
-}
-
 // #endregion
 
 let $toolbox = $ToolBox(tools);
@@ -834,11 +829,8 @@ $("body").on("dragover dragenter", (/** @type {JQuery.DragOverEvent | JQuery.Dra
 		event.preventDefault();
 		// @TODO: sort files/items in priority of image, theme, palette
 		// and then try loading them in series, with async await to avoid race conditions?
-		// or maybe support opening multiple documents in tabs
-		// Note: don't use FS Access API in Electron app because:
-		// 1. it's faulty (permissions problems, 0 byte files maybe due to the perms problems)
-		// 2. we want to save the file.path, which the dt.files code path takes care of
-		if (window.FileSystemHandle && !window.is_electron_app) {
+                // or maybe support opening multiple documents in tabs
+                if (window.FileSystemHandle) {
 			for (const item of dt.items) {
 				// kind will be "file" for file/directory entries.
 				if (item.kind === "file") {

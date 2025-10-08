@@ -295,62 +295,6 @@ Missing features:
 - <details><summary>Directly saving to files is implemented but not enabled currently.</summary>I was concerned about data loss for two reasons: 1. the change in behavior of File > Save / Ctrl+S from effectively acting as Save As to overwriting files directly, although I made a warning dialog for this, with a don't show again option; 2. there was a bad bug with saved files ending up completely empty (zero bytes), which I don't know if was a bug in my code or in Chrome.</details>
 - <details><summary>Offline support is not implemented.</summary>I've taken a few stabs at this, and <a href="https://github.com/1j01/jspaint/pull/144">I'm not the only one</a>, but there are some huge caveats, such as the development server not being able to live-reload without disabling the service worker.</details>
 
-### Electron
-
-I've also built it into a desktop app with [Electron][] and [Electron Forge][].
-You can download it from the [releases page][].
-
-![JS Paint running as a desktop app on macOS](images/meta/electron-app-screenshot-mac.png)
-
-Electron app features:
-- Native-like experience (runs in a window with no address bar)
-- Cross-platform (macOS, Windows, Linux)
-- Clipboard support
-- Files can be opened in various ways:
-  - **File > Open**
-  - Drag and drop onto window
-  - Drag and drop onto dock icon on macOS
-  - Drag and drop onto desktop shortcut
-  - **Right Click > Open With** in file manager (macOS and Linux)
-    - On Windows, you can manually paste the path to the executable into the Open With dialog, which you can find by right clicking the app in the taskbar, then right clicking the app's name, and selecting Properties. In the Shortcut tab, the Target field is the path to the executable. Once you open the app in this way, the app will show up in the Open With list, and if you select "Always", it will become the default app for that file type.
-  - Command line: type `jspaint path/to/file.png` in the terminal
-- **File > Save** will save directly to the file
-- **File > Set As Wallpaper (Tiled)** and **File > Set As Wallpaper (Centered)**
-- On macOS, an icon representing the currently open file is shown in the titlebar. You can drag this icon into other applications, for example to include the image you're editing in an email. The icon is dimmed while there are unsaved changes.
-
-<details><summary>Electron app limitations</summary>
-
-- Basics:
-  - Execution is blocked by default on Mac and Windows
-    - On macOS you need to Ctrl+click the file and then say Open
-    - On Windows, you need to say "More info" and then "Run" (or "Run anyway"?)
-    - I would need to pay a fee for code signing to avoid this. It's basically *security by extortion*.
-  - There are no automatic updates. Apparently I would need to pay a fee for code signing to get this free service.
-    - That said, **Help > About Paint** can tell you if JS Paint is out of date, at least in terms of news updates.
-  - Electron is out of date. It may, for instance, contain image decoding vulnerabilities that have since been fixed. However, I've taken precautions to sandbox the app and restrict write access to a list of files explicitly opened in the app, the list being controlled by the main process, separate from the renderer process which would handle image decoding.
-  - Only a single editor window can be opened at once.
-  - The File menu's recent files list is not implemented, nor are [OS-specific jump menus](https://www.electronjs.org/docs/latest/tutorial/recent-documents).
-- Minor details:
-  - A very confusing message is shown if you edit a document before clicking an Open link in the Manage Storage dialog.
-  - WebGL error messages tell you to refresh without offering a way to reload; also, calling the app a web page feels unpolished
-  - The File > Open dialog does not have an All Files (\*.\*) option, and the list of file types supported is not exhaustive; for example, AVIF images can be loaded but only by drag and drop
-  - Drag and drop shows two "Save changes to X?" dialogs on top of each other?
-- I'm not sure if all of these are still issues, need to retest them:
-  - Quit doesn't exit app completely, only closes the window if it's open... intended behavior? shouldn't right click > Quit really quit? https://stackoverflow.com/questions/44316306/how-to-quit-electron-app-on-mac
-  - Quit doesn't show/focus window when save changes prompt is shown on maybe mac/linux
-  - Ctrl+C doesn't exit on mac/linux https://github.com/electron/electron/issues/5273
-    - this is because of `editor_window.on("close")` calling `preventDefault` and may be a feature but needs to show/focus the window
-    - https://stackoverflow.com/questions/75362687/electron-js-processes-do-not-exit-on-app-quit
-  - Opening an SVG file also isn't working via command line argument (dragging onto the shortcut in File Explorer) even though dragging and dropping into the window works.  
-    - Seems to load load SVG as a palette... Is this what I was running into?
-
-</details>
-
-[Electron]: https://electronjs.org/
-[Electron Forge]: https://electronforge.io/
-[releases page]: https://github.com/1j01/jspaint/releases/
-
-
 ## Development Setup
 
 [Clone the repo.](https://help.github.com/articles/cloning-a-repository/)
@@ -387,21 +331,8 @@ See [Control Directives](https://rtlcss.com/learn/usage-guide/control-directives
 There is a VS Code launch task for attaching to Chrome for debugging.
 See `.vscode/launch.json` for usage instructions.
 
-### Desktop App (Electron)
-
-- Install dependencies with `npm i`
-- Start the electron app with `npm run electron:start`
-
-[electron-debug][] is included, so you can use <kbd>F5</kbd>/<kbd>Ctrl+R</kbd> to reload and <kbd>F12</kbd>/<kbd>Ctrl+Shift+I</kbd> to open the devtools.
-
-You can build for production with `npm run electron:make`
-
-There is a VS Code launch task for debugging the Electron main process.
-For the renderer process, you can use the embedded Chrome DevTools.
-
 [Live Server]: https://github.com/1j01/live-server
 [Node.js]: https://nodejs.org/
-[electron-debug]: https://github.com/sindresorhus/electron-debug
 
 ## Deployment
 

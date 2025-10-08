@@ -258,10 +258,7 @@ export default [
 	},
 	{
 		"files": [
-			"forge.config.js",
-			"src/electron-injected.js",
-			"src/electron-main.js",
-			"sync-package.js",
+                        "sync-package.js",
 			"prune-globals.js",
 			"cypress/plugins/index.js",
 			"localization/*.js",

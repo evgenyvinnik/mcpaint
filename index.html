@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>JS Paint</title>
 
-	<!-- This should mirror CSP in electron-main.js, except maybe for firebase stuff. -->
+      <!-- This should mirror the CSP used by the desktop wrapper, except maybe for firebase stuff. -->
 	<!-- Firebase stuff is somewhat speculative, as the quota is exceeded as I'm adding this. -->
 	<!-- Lax img-src is needed for speech recognition, e.g. interpret_command("draw a cat")[0].exec(); -->
 	<!-- connect-src needs data:/blob: for loading images via fetch, including from local storage. -->

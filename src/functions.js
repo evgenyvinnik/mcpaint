@@ -743,18 +743,11 @@ function make_history_node({
 }
 
 function update_title() {
-	document.title = `${file_name} - ${is_pride_month ? "June Solidarity " : ""}${localize("Paint")}`;
+        document.title = `${file_name} - ${is_pride_month ? "June Solidarity " : ""}${localize("Paint")}`;
 
-	if (is_pride_month) {
-		$("link[rel~='icon']").attr("href", "./images/icons/gay-es-paint-16x16-light-outline.png");
-	}
-
-	if (window.setRepresentedFilename) {
-		window.setRepresentedFilename(system_file_handle ?? "");
-	}
-	if (window.setDocumentEdited) {
-		window.setDocumentEdited(!saved);
-	}
+        if (is_pride_month) {
+                $("link[rel~='icon']").attr("href", "./images/icons/gay-es-paint-16x16-light-outline.png");
+        }
 }
 
 /**
@@ -803,11 +796,11 @@ async function load_image_from_uri(uri) {
 	//   - The user may be just trying to paste text, not an image.
 	// - non-CORS-enabled URI
 	//   --> Use a CORS proxy! :)
-	//   - In electron, using a CORS proxy 1. is silly, 2. maybe isn't working.
-	//     --> Either proxy requests to the main process,
-	//         or configure headers in the main process to make requests work.
-	//         Probably the latter. @TODO
-	//         https://stackoverflow.com/questions/51254618/how-do-you-handle-cors-in-an-electron-app
+        //   - In a desktop wrapper, using a CORS proxy 1. is silly, 2. maybe isn't working.
+        //     --> Either proxy requests to the host environment,
+        //         or configure headers in the host environment to make requests work.
+        //         Probably the latter. @TODO
+        //         https://stackoverflow.com/questions/51254618/how-do-you-handle-cors-in-an-electron-app
 	// - invalid image / unsupported image format
 	// - image is no longer available on the live web
 	//   --> try loading from WayBack Machine :)
@@ -990,7 +983,7 @@ function open_from_image_info(info, callback, canceled, into_existing_session, f
 
 		if (info.source_blob instanceof File) {
 			file_name = info.source_blob.name;
-			// file.path is available in Electron (see https://www.electronjs.org/docs/api/file-object#file-object)
+                    // Some hosts provide file.path (see https://www.electronjs.org/docs/api/file-object#file-object)
 			// @ts-ignore
 			system_file_handle = info.source_blob.path;
 		}
@@ -4149,10 +4142,7 @@ function sanity_check_blob(blob, okay_callback, magic_number_bytes, magic_wanted
 						// 	<p>${localize("Unexpected file format.")}</p>
 						// 	<p>${localize("An unsupported operation was attempted.")}</p>
 						// `,
-						message:
-							window.is_electron_app ?
-								"Writing images in this file format is not supported." :
-								"Your browser does not support writing images in this file format.",
+                                                message: "Writing images in this file format is not supported.",
 						iconID: "error",
 					});
 				}
@@ -4231,11 +4221,11 @@ export {
 };
 // Temporary globals until all dependent code is converted to ES Modules
 window.make_history_node = make_history_node; // used by app-state.js
-window.open_from_file = open_from_file; // used by electron-injected.js
-window.are_you_sure = are_you_sure; // used by app-localization.js, electron-injected.js
-window.show_error_message = show_error_message; // used by app-localization.js, electron-injected.js
-window.show_about_paint = show_about_paint; // used by electron-injected.js
+window.open_from_file = open_from_file; // used by app-localization.js
+window.are_you_sure = are_you_sure; // used by app-localization.js
+window.show_error_message = show_error_message; // used by app-localization.js
+window.show_about_paint = show_about_paint;
 window.exit_fullscreen_if_ios = exit_fullscreen_if_ios; // used by app-localization.js
 window.get_tool_by_id = get_tool_by_id; // used by app-state.js
 window.make_monochrome_palette = make_monochrome_palette; // used by app-state.js
-window.sanity_check_blob = sanity_check_blob; // used by electron-injected.js
+window.sanity_check_blob = sanity_check_blob;
