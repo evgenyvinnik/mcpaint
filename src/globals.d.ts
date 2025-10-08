@@ -467,12 +467,6 @@ interface Window {
 	// simulate-random-gestures.js
 	simulateRandomGesturesPeriodically: () => void;
 	drawRandomlySeed: number;
-	// electron-injected.js
-	is_electron_app?: boolean;
-	electron_is_dev?: boolean;
-	setDocumentEdited?: (edited: boolean) => void;
-	setRepresentedFilename?: (filename: string) => void;
-	setMenus?: (menus: any) => void; // TODO: types for OS-GUI.js menus
 	// OS-GUI's MenuBar.js
 	MenuBar: typeof MenuBar;
 	// Youtube API, used by vaporwave-fun.js, missing from @types/youtube
