@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useState } from "react";
-import { default_palette } from "../../color-data.js";
+import React, { useCallback, useMemo, useState } from "react";
+import { default_palette as DEFAULT_PALETTE } from "../../color-data.js";
 import { Component } from "./Component.jsx";
 
 const FALLBACK_PRIMARY = "rgb(0,0,0)";
@@ -7,18 +7,15 @@ const FALLBACK_SECONDARY = "rgb(255,255,255)";
 
 const ensurePalette = (palette) => {
         if (!Array.isArray(palette) || palette.length === 0) {
-                return [FALLBACK_PRIMARY, FALLBACK_SECONDARY];
+                return DEFAULT_PALETTE;
         }
         return palette;
 };
 
 const normalizeColor = (color, fallback) => (typeof color === "string" && color ? color : fallback);
 
-const nextPaletteId = (color, index) => `${index}-${color}`;
-
 /**
- * React counterpart to the legacy Colors component.
- * Provides palette interaction and primary/secondary swatch handling.
+ * React-friendly recreation of the legacy Colors component using the classic styles.
  *
  * @param {object} props
  * @param {string[]} [props.palette]
@@ -37,102 +34,84 @@ export function ColorBox({
         onSecondaryChange,
         onEditRequest,
 }) {
-        const palette = useMemo(() => ensurePalette(paletteProp ?? default_palette), [paletteProp]);
+        const palette = useMemo(() => ensurePalette(paletteProp ?? DEFAULT_PALETTE), [paletteProp]);
         const [primary, setPrimary] = useState(() => normalizeColor(initialPrimary, palette[0] ?? FALLBACK_PRIMARY));
         const [secondary, setSecondary] = useState(() => normalizeColor(initialSecondary, palette[palette.length - 1] ?? FALLBACK_SECONDARY));
-        const [hoveredSwatchId, setHoveredSwatchId] = useState(null);
 
-        const selectPrimary = useCallback((color) => {
+        const emitPrimary = useCallback((color) => {
                 setPrimary(color);
                 onPrimaryChange?.(color);
         }, [onPrimaryChange]);
 
-        const selectSecondary = useCallback((color) => {
+        const emitSecondary = useCallback((color) => {
                 setSecondary(color);
                 onSecondaryChange?.(color);
         }, [onSecondaryChange]);
 
-        const handleSwatchInteraction = useCallback((event, color) => {
-                if (event.type === "contextmenu" || event.button === 2 || event.ctrlKey) {
+        const swapColors = useCallback(() => {
+                setPrimary((currentPrimary) => {
+                        const nextPrimary = secondary;
+                        setSecondary(currentPrimary);
+                        onPrimaryChange?.(nextPrimary);
+                        onSecondaryChange?.(currentPrimary);
+                        return nextPrimary;
+                });
+        }, [secondary, onPrimaryChange, onSecondaryChange]);
+
+        const handleSwapKey = useCallback((event) => {
+                if (event.key === "Enter" || event.key === " ") {
                         event.preventDefault();
-                        selectSecondary(color);
-                        return;
+                        swapColors();
                 }
+        }, [swapColors]);
 
-                if (event.shiftKey) {
-                        selectSecondary(color);
-                        return;
-                }
-
-                selectPrimary(color);
-        }, [selectPrimary, selectSecondary]);
-
-        const editColors = useCallback(() => {
+        const handleEditRequest = useCallback(() => {
                 onEditRequest?.(primary, secondary);
         }, [onEditRequest, primary, secondary]);
 
-        const paletteRows = useMemo(() => {
-                const midpoint = Math.ceil(palette.length / 2);
-                return [
-                        palette.slice(0, midpoint).map((color, index) => ({ color, index })),
-                        palette.slice(midpoint).map((color, index) => ({ color, index: index + midpoint })),
-                ];
-        }, [palette]);
+        const resolveColor = (color) => (typeof color === "string" && color ? color : FALLBACK_PRIMARY);
+
+        const handlePaletteInteraction = useCallback((event, color) => {
+                const resolvedColor = resolveColor(color);
+                if (event.type === "contextmenu" || event.button === 2 || event.ctrlKey) {
+                        event.preventDefault();
+                        emitSecondary(resolvedColor);
+                        return;
+                }
+                emitPrimary(resolvedColor);
+        }, [emitPrimary, emitSecondary]);
 
         return (
                 <Component title="Colors" className="colors-component" orientation="wide">
                         <div className="color-box" role="group" aria-label="Color palette">
-                                <div className="color-preview" aria-live="polite">
-                                        <button
-                                                type="button"
-                                                className="color-preview-primary"
-                                                style={{ background: primary }}
-                                                aria-label={`Primary color: ${primary}`}
-                                                onClick={() => selectPrimary(primary)}
-                                        />
-                                        <button
-                                                type="button"
-                                                className="color-preview-secondary"
-                                                style={{ background: secondary }}
-                                                aria-label={`Secondary color: ${secondary}`}
-                                                onClick={() => selectSecondary(secondary)}
-                                        />
+                                <div
+                                        className="current-colors"
+                                        role="button"
+                                        tabIndex={0}
+                                        aria-label={`Swap colors ${primary} and ${secondary}`}
+                                        onClick={swapColors}
+                                        onKeyDown={handleSwapKey}
+                                >
+                                        <span className="color-selection background-color" style={{ background: secondary }} aria-hidden="true" />
+                                        <span className="color-selection foreground-color" style={{ background: primary }} aria-hidden="true" />
                                 </div>
-                                <div className="palette" role="listbox" aria-orientation="horizontal">
-                                        {paletteRows.map((row, rowIndex) => (
-                                                <div key={`row-${rowIndex}`} className="palette-row">
-                                                        {row.map(({ color, index }) => {
-                                                                const swatchId = nextPaletteId(color, index);
-                                                                const isPrimary = color === primary;
-                                                                const isSecondary = color === secondary;
-                                                                const isHovered = hoveredSwatchId === swatchId;
-                                                                return (
-                                                                        <button
-                                                                                key={swatchId}
-                                                                                type="button"
-                                                                                className={[
-                                                                                        "palette-swatch",
-                                                                                        isPrimary ? "selected-primary" : "",
-                                                                                        isSecondary ? "selected-secondary" : "",
-                                                                                        isHovered ? "hovered" : "",
-                                                                                ].filter(Boolean).join(" ")}
-                                                                                style={{ background: color }}
-                                                                                aria-label={`Select color ${color}`}
-                                                                                aria-pressed={isPrimary || isSecondary}
-                                                                                onClick={(event) => handleSwatchInteraction(event, color)}
-                                                                                onContextMenu={(event) => handleSwatchInteraction(event, color)}
-                                                                                onMouseEnter={() => setHoveredSwatchId(swatchId)}
-                                                                                onMouseLeave={() => setHoveredSwatchId(null)}
-                                                                        />
-                                                                );
-                                                        })}
-                                                </div>
-                                        ))}
-                                </div>
-                                <div className="color-actions">
-                                        <button type="button" onClick={editColors}>
-                                                Edit Colors…
-                                        </button>
+                                <div className="palette" role="listbox" aria-label="Available colors">
+                                        {palette.map((color, index) => {
+                                                const resolvedColor = resolveColor(color);
+                                                return (
+                                                        <button
+                                                                key={`${index}-${resolvedColor}`}
+                                                                type="button"
+                                                                className="color-button"
+                                                                style={{ background: resolvedColor }}
+                                                                aria-label={`Select color ${resolvedColor}`}
+                                                                onClick={(event) => handlePaletteInteraction(event, color)}
+                                                                onContextMenu={(event) => handlePaletteInteraction(event, color)}
+                                                                onDoubleClick={handleEditRequest}
+                                                                data-color={resolvedColor}
+                                                        />
+                                                );
+                                        })}
                                 </div>
                         </div>
                 </Component>
