@@ -1,9 +1,18 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Frame, ColorBox, ToolBox } from "../react/components/index.js";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+        Frame,
+        ColorBox,
+        ToolBox,
+        FontBox,
+        ToolOptions,
+        createInitialToolSettings,
+        describeToolOptions,
+        TOOL_OPTIONS_DEFAULTS,
+} from "../react/components/index.js";
 import { default_palette as DEFAULT_PALETTE } from "../color-data.js";
 import { DEFAULT_STATUS_TEXT } from "../react/components/Frame.jsx";
 
-const TOOLBOX_ITEMS = [
+const BASE_TOOLBOX_ITEMS = [
         {
                 id: "free-form-select",
                 name: "Free-Form Select",
@@ -104,23 +113,100 @@ const TOOLBOX_ITEMS = [
 
 const DEFAULT_PRIMARY = DEFAULT_PALETTE[0];
 const DEFAULT_SECONDARY = DEFAULT_PALETTE[DEFAULT_PALETTE.length - 1];
-const DEFAULT_TOOL_SELECTION = [TOOLBOX_ITEMS[6]?.id ?? TOOLBOX_ITEMS[0]?.id ?? ""];
+const DEFAULT_TOOL_SELECTION = [BASE_TOOLBOX_ITEMS[6]?.id ?? BASE_TOOLBOX_ITEMS[0]?.id ?? ""];
 const CANVAS_WIDTH = 480;
 const CANVAS_HEIGHT = 320;
+
+const shallowEqual = (a = {}, b = {}) => {
+        const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+        for (const key of keys) {
+                if (!Object.is(a[key], b[key])) {
+                        return false;
+                }
+        }
+        return true;
+};
 
 export function App() {
         const [primaryColor, setPrimaryColor] = useState(DEFAULT_PRIMARY);
         const [secondaryColor, setSecondaryColor] = useState(DEFAULT_SECONDARY);
         const [selectedToolIds, setSelectedToolIds] = useState(DEFAULT_TOOL_SELECTION);
         const [hoveredTool, setHoveredTool] = useState(null);
+        const [toolSettings, setToolSettings] = useState(createInitialToolSettings);
         const canvasRef = useRef(null);
 
-        const activeTool = useMemo(
-                () => TOOLBOX_ITEMS.find((tool) => selectedToolIds.includes(tool.id)) ?? TOOLBOX_ITEMS[0] ?? null,
-                [selectedToolIds],
+        const handleToolSettingsChange = useCallback((toolId, patch) => {
+                setToolSettings((previousState) => {
+                        const defaults = TOOL_OPTIONS_DEFAULTS[toolId] ?? {};
+                        const previousForTool = previousState[toolId] ?? {};
+                        const nextForTool = {
+                                ...defaults,
+                                ...previousForTool,
+                                ...patch,
+                        };
+
+                        if (shallowEqual(previousForTool, nextForTool)) {
+                                return previousState;
+                        }
+
+                        return {
+                                ...previousState,
+                                [toolId]: nextForTool,
+                        };
+                });
+        }, []);
+
+        const toolboxItems = useMemo(
+                () => BASE_TOOLBOX_ITEMS.map((tool) => ({
+                        ...tool,
+                        options: (currentTool) => (
+                                <ToolOptions
+                                        key={currentTool.id}
+                                        tool={currentTool}
+                                        settings={toolSettings[currentTool.id]}
+                                        onChange={handleToolSettingsChange}
+                                />
+                        ),
+                })),
+                [toolSettings, handleToolSettingsChange],
         );
 
-        const statusMessage = hoveredTool?.description ?? activeTool?.description ?? DEFAULT_STATUS_TEXT;
+        const activeTool = useMemo(
+                () => toolboxItems.find((tool) => selectedToolIds.includes(tool.id)) ?? toolboxItems[0] ?? null,
+                [selectedToolIds, toolboxItems],
+        );
+
+        const activeToolSettings = useMemo(() => {
+                if (!activeTool) {
+                        return null;
+                }
+                const defaults = TOOL_OPTIONS_DEFAULTS[activeTool.id] ?? {};
+                return {
+                        ...defaults,
+                        ...(toolSettings[activeTool.id] ?? {}),
+                };
+        }, [activeTool, toolSettings]);
+
+        const statusDetails = useMemo(() => {
+                if (hoveredTool || !activeTool) {
+                        return "";
+                }
+                return describeToolOptions(activeTool.id, activeToolSettings ?? {});
+        }, [hoveredTool, activeTool, activeToolSettings]);
+
+        const statusMessage = useMemo(() => {
+                if (hoveredTool) {
+                        return hoveredTool.description ?? DEFAULT_STATUS_TEXT;
+                }
+                if (activeTool) {
+                        const base = activeTool.description ?? DEFAULT_STATUS_TEXT;
+                        if (!statusDetails) {
+                                return base;
+                        }
+                        return `${base} ${statusDetails}`;
+                }
+                return DEFAULT_STATUS_TEXT;
+        }, [hoveredTool, activeTool, statusDetails]);
 
         useEffect(() => {
                 const canvas = canvasRef.current;
@@ -137,16 +223,46 @@ export function App() {
                 ctx.strokeRect(0.5, 0.5, canvas.width - 1, canvas.height - 1);
         }, []);
 
+        const fontSettings = useMemo(
+                () => ({
+                        ...TOOL_OPTIONS_DEFAULTS.text,
+                        ...(toolSettings.text ?? {}),
+                }),
+                [toolSettings],
+        );
+
+        const handleFontFormattingChange = useCallback(
+                (formatting) => {
+                        handleToolSettingsChange("text", formatting);
+                },
+                [handleToolSettingsChange],
+        );
+
+        const showFontBox = activeTool?.id === "text";
+
         return (
                 <Frame
                         leftContent={(
                                 <ToolBox
-                                        tools={TOOLBOX_ITEMS}
+                                        tools={toolboxItems}
                                         selectedToolIds={selectedToolIds}
                                         onSelectionChange={(toolIds) => setSelectedToolIds(toolIds)}
                                         onHoverChange={setHoveredTool}
                                 />
                         )}
+                        rightContent={showFontBox ? (
+                                <FontBox
+                                        defaultFamily={fontSettings.family}
+                                        defaultSize={fontSettings.size}
+                                        defaultFormatting={{
+                                                bold: fontSettings.bold,
+                                                italic: fontSettings.italic,
+                                                underline: fontSettings.underline,
+                                                vertical: fontSettings.vertical,
+                                        }}
+                                        onChange={handleFontFormattingChange}
+                                />
+                        ) : null}
                         bottomContent={(
                                 <ColorBox
                                         palette={DEFAULT_PALETTE}
@@ -156,7 +272,15 @@ export function App() {
                                         onSecondaryChange={setSecondaryColor}
                                 />
                         )}
-                        canvasContent={(<canvas ref={canvasRef} className="main-canvas" width={CANVAS_WIDTH} height={CANVAS_HEIGHT} aria-label="Drawing canvas preview" />)}
+                        canvasContent={(
+                                <canvas
+                                        ref={canvasRef}
+                                        className="main-canvas"
+                                        width={CANVAS_WIDTH}
+                                        height={CANVAS_HEIGHT}
+                                        aria-label="Drawing canvas preview"
+                                />
+                        )}
                         statusText={statusMessage}
                         statusPosition={`Primary ${primaryColor}`}
                         statusSize={`Secondary ${secondaryColor}`}
