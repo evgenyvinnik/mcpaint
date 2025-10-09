@@ -2,7 +2,7 @@
 // @name         Cypress Image Snapshot Viewer
 // @namespace    https://github.com/1j01/
 // @version      0.1
-// @description  Show diffs of screenshots within the Cypress Dashboard. Works with images from cypress-image-snapshot. To use, press D in the gallery, and then move the mouse over and out of the image.
+// @description  Show diffs of screenshots within the Cypress Dashboard. Works with images from @simonsmith/cypress-image-snapshot. To use, press D in the gallery, and then move the mouse over and out of the image.
 // @author       Isaiah Odhner
 // @match        https://dashboard.cypress.io/*
 // @grant        none

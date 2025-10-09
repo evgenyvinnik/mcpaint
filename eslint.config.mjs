@@ -98,7 +98,8 @@ export default [
 			"@stylistic/arrow-parens": ["error", "always"],
 			"@stylistic/arrow-spacing": ["error", { "before": true, "after": true }],
 			"@stylistic/block-spacing": ["error", "always"],
-			"@stylistic/brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+                        "@stylistic/brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+                        "@stylistic/indent": "off",
 			"@stylistic/comma-dangle": ["error", {
 				"arrays": "always-multiline", // ensure commas to avoid confusing git diffs
 				"objects": "always-multiline", // ensure commas to avoid confusing git diffs
@@ -116,48 +117,7 @@ export default [
 			// "@stylistic/function-paren-newline": ["error", "multiline-arguments"], // several places with meaningful line breaks grouping arguments
 			"@stylistic/generator-star-spacing": ["error", "after"],
 			// "@stylistic/implicit-arrow-linebreak": ["error", "beside"], // could encourage parens for clarity, but ESLint won't mention that's the reason, so probably not a good idea
-			// The indent settings are mostly defaults copied from https://github.com/eslint-stylistic/eslint-stylistic/blob/c11f1d6f26c13b29fd44c95c908922cb79a0ac82/packages/eslint-plugin/configs/customize.ts#L115-L154
-			"@stylistic/indent": ["error", "tab", {
-				ArrayExpression: 1,
-				CallExpression: { arguments: 1 },
-				flatTernaryExpressions: false,
-				FunctionDeclaration: { body: 1, parameters: 1 },
-				FunctionExpression: { body: 1, parameters: 1 },
-				ignoreComments: true, // modified from default
-				ignoredNodes: [
-					"TemplateLiteral *",
-					"JSXElement",
-					"JSXElement > *",
-					"JSXAttribute",
-					"JSXIdentifier",
-					"JSXNamespacedName",
-					"JSXMemberExpression",
-					"JSXSpreadAttribute",
-					"JSXExpressionContainer",
-					"JSXOpeningElement",
-					"JSXClosingElement",
-					"JSXFragment",
-					"JSXOpeningFragment",
-					"JSXClosingFragment",
-					"JSXText",
-					"JSXEmptyExpression",
-					"JSXSpreadChild",
-					"TSUnionType",
-					"TSIntersectionType",
-					"TSTypeParameterInstantiation",
-					"FunctionExpression > .params[decorators.length > 0]",
-					"FunctionExpression > .params > :matches(Decorator, :not(:first-child))",
-					"ClassBody.body > PropertyDefinition[decorators.length > 0] > .key",
-				],
-				ImportDeclaration: 1,
-				MemberExpression: 1,
-				ObjectExpression: 1,
-				offsetTernaryExpressions: false,
-				outerIIFEBody: 1,
-				SwitchCase: 1,
-				VariableDeclarator: 1,
-			}],
-			"@stylistic/indent-binary-ops": ["error", "tab"],
+                        "@stylistic/indent-binary-ops": ["error", "tab"],
 			// "@stylistic/jsx-child-element-spacing": "off",
 			// "@stylistic/jsx-closing-bracket-location": "off",
 			// "@stylistic/jsx-closing-tag-location": "off",
@@ -213,7 +173,7 @@ export default [
 			// "@stylistic/padded-blocks": "off", // it depends, especially on how much stuff is in the block
 			// "@stylistic/padding-line-between-statements": ["error", ""], // TODO: investigate options, looks very complex
 			// "@stylistic/quote-props": ["error", "consistent"], // I prefer it inconsistent if it's just for a few CSS custom properties when setting several CSS properties at once, especially since it's not going to be consistent with object property shorthand e.g. { "--requires-quotes": requiresQuotes, "quotedForConsistency": true, inconsistent }
-			"@stylistic/quotes": ["error", "double", { "avoidEscape": true, "allowTemplateLiterals": true }], // Note: allowTemplateLiterals allows template literals without any substitutions, and removing "allowTemplateLiterals" doesn't allow them for avoiding escaping
+                        "@stylistic/quotes": ["error", "double", { "avoidEscape": true, "allowTemplateLiterals": "always" }], // Note: allowTemplateLiterals allows template literals without any substitutions, and removing "allowTemplateLiterals" doesn't allow them for avoiding escaping
 			"@stylistic/rest-spread-spacing": ["error", "never"],
 			"@stylistic/semi": ["error", "always"],
 			"@stylistic/semi-spacing": ["error", { "before": false, "after": true }],
@@ -259,17 +219,29 @@ export default [
 	{
 		"files": [
                         "sync-package.js",
-			"prune-globals.js",
-			"cypress/plugins/index.js",
-			"localization/*.js",
-		],
-		"languageOptions": {
-			"sourceType": "commonjs",
-			"globals": {
-				...globals.node,
-			},
-		},
-	},
+                        "prune-globals.js",
+                        "cypress/plugins/index.js",
+                        "cypress.config.js",
+                        "localization/*.js",
+                ],
+                "languageOptions": {
+                        "sourceType": "commonjs",
+                        "globals": {
+                                ...globals.node,
+                        },
+                },
+        },
+        {
+                "files": [
+                        "vite.config.js",
+                        "vite.config.mjs",
+                ],
+                "languageOptions": {
+                        "globals": {
+                                ...globals.node,
+                        },
+                },
+        },
 	{
 		"files": [
 			"cypress/**/*.js",

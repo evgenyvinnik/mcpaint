@@ -60,11 +60,9 @@ context("visual tests", () => {
 		closeMenus();
 		cy.wait(1000); // give a bit of time for theme to load
 	};
-	// `intercept` requires Cypress 6+
-	// cypress-image-snapshot@4.0.1 has a peer dependency on cypress@"^4.5.0",
-	// although I believe it works with v9, and only really has problems on v10.
-	// That said, this didn't work! So. No point in upgrading just yet.
-	// I'll upgrade when I'm ready to replace the visual testing framework.
+        // `intercept` requires Cypress 6+
+        // @simonsmith/cypress-image-snapshot keeps pace with current Cypress releases,
+        // so the visual tests can keep running without hacks.
 	// const waitForRequest = (urlPattern, callback) => {
 	// 	// intercept without changing or stubbing response
 	// 	cy.intercept(urlPattern).as("urlPattern");
