@@ -1,6 +1,6 @@
 // @ts-check
 const fs = require("fs");
-const glob = require("glob");
+const { globSync } = require("glob");
 const parse_rc_file = require("./parse-rc-file");
 const { AccessKeys } = require("../lib/os-gui/MenuBar.js");
 
@@ -15,7 +15,7 @@ const remove_ellipsis = (str) => str.replace("...", "");
 const only_unique = (value, index, self) => self.indexOf(value) === index;
 
 const get_strings = (lang) => {
-	const rc_files = glob.sync(`${lang}/**/*.rc`, { cwd: __dirname, absolute: true });
+        const rc_files = globSync(`${lang}/**/*.rc`, { cwd: __dirname, absolute: true });
 	rc_files.sort((a, b) => a.localeCompare(b, "en"));
 	return rc_files.map(
 		(rc_file) => parse_rc_file(fs.readFileSync(rc_file, "utf16le").replace(/\ufeff/g, ""))
