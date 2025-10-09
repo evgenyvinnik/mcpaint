@@ -9,17 +9,28 @@
 \*/
 
 html, body, .jspaint {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	border: 0;
-	overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        overflow: hidden;
+}
+.sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
 }
 .jspaint {
-	direction: ltr;
-	
-	box-sizing: border-box; /* for iPad fullscreen workaround, which adds padding to .jspaint; without this it hides the status bar */
+        direction: ltr;
+
+        box-sizing: border-box; /* for iPad fullscreen workaround, which adds padding to .jspaint; without this it hides the status bar */
 
 	/* prevent selection, especially for Safari on iOS/iPad, which likes to select random (nearest, kind of?) elements when long-pressing */
 	-webkit-user-select: none;
@@ -344,15 +355,73 @@ whereas it breaks component docking calculations if used to shift the colors box
 	flex-flow: column;
 }
 .tool-options {
-	display: flex;
-	margin-top: 3px;
-	width: 41px;
-	height: 66px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
+        display: flex;
+        margin-top: 3px;
+        width: 41px;
+        height: 66px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
 }
 .tool-options > div {
-	flex: 1;
+        flex: 1;
+}
+.tool-option-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        gap: 2px;
+        width: 100%;
+        height: 100%;
+        flex: 1 1 100%;
+}
+.tool-option-button {
+        width: 18px;
+        height: 18px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--ButtonShadow, #808080);
+        background-color: var(--ButtonFace, #c0c0c0);
+        color: var(--WindowText, #000000);
+        box-shadow: 1px 1px 0 var(--ButtonHilight, #ffffff) inset,
+                -1px -1px 0 var(--ButtonDkShadow, #404040) inset;
+        font-size: 10px;
+        line-height: 1;
+}
+.tool-option-button:hover,
+.tool-option-button:focus {
+        outline: none;
+        box-shadow: 1px 1px 0 var(--Hilight, #000080) inset,
+                -1px -1px 0 var(--ButtonDkShadow, #404040) inset;
+}
+.tool-option-button.selected,
+.tool-option-button[aria-pressed="true"] {
+        background-color: var(--Hilight, #000080);
+        color: var(--HilightText, #ffffff);
+        box-shadow: 1px 1px 0 var(--ButtonShadow, #808080) inset,
+                -1px -1px 0 var(--ButtonHilight, #ffffff) inset;
+}
+.tool-option-button svg {
+        width: 14px;
+        height: 14px;
+        pointer-events: none;
+}
+.tool-option-text {
+        font-size: 10px;
+        line-height: 1;
+        pointer-events: none;
+}
+.tool-option-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        color: var(--GrayText, #6d6d6d);
+        font-size: 12px;
 }
 .tools {
 	display: flex;
