@@ -4,6 +4,8 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 
 const htmlEntries = {
   main: resolve(__dirname, "index.html"),
+  legacy: resolve(__dirname, "old/index.html"),
+  reactPreview: resolve(__dirname, "new/index.html"),
   about: resolve(__dirname, "about.html"),
   privacy: resolve(__dirname, "privacy.html"),
   testNewsNewer: resolve(__dirname, "test-news-newer.html"),
