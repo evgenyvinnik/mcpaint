@@ -131,7 +131,6 @@ export function HelpContent({
 			onLoad={handleLoad}
 			title={t("Help Content")}
 			name="help-frame"
-			sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock allow-modals allow-popups"
 			style={{
 				flex: 1,
 				width: "100%",

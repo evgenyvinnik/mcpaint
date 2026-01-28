@@ -453,7 +453,6 @@ export function HelpWindow({ isOpen, onClose }: HelpWindowProps) {
 					<iframe
 						ref={iframeRef}
 						allowFullScreen
-						sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock allow-modals allow-popups allow-downloads"
 						src={currentUrl}
 						className="inset-deep"
 						name="help-frame"
