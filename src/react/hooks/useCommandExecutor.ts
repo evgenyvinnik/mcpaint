@@ -16,6 +16,7 @@ import { useAIStore } from "../context/state/aiStore";
 import { saveSetting } from "../context/state/persistence";
 import { commandRegistry, type CommandContext } from "./commandHandlers";
 import { TOOL_IDS, type ToolId } from "../context/state/types";
+import { useVirtualCursor } from "./useVirtualCursor";
 
 /**
  * Animation speed presets
@@ -246,6 +247,7 @@ export function useCommandExecutor(options: CommandExecutorOptions) {
   const historyStore = useHistoryStore;
   const uiStore = useUIStore;
   const aiStore = useAIStore;
+  const cursorAnimation = useVirtualCursor();
 
   /**
    * Get the canvas 2D context
@@ -347,12 +349,22 @@ export function useCommandExecutor(options: CommandExecutorOptions) {
       if (animateCursor) {
         const position = extractCursorPosition(command);
         if (position) {
-          aiStore.getState().showCursor(position.x, position.y, toolIcon);
+          const currentCursor = useAIStore.getState().virtualCursor;
+          const startX = currentCursor.visible ? currentCursor.x : position.x;
+          const startY = currentCursor.visible ? currentCursor.y : position.y;
+          const distance = Math.hypot(position.x - startX, position.y - startY);
+          const cursorDuration = Math.min(250, Math.max(60, distance * 0.8));
+
+          await cursorAnimation.animateTo(position.x, position.y, {
+            duration: cursorDuration,
+            toolIcon,
+          });
+
           onCursorMove?.(position.x, position.y, toolIcon);
 
-          // Longer delay for cursor to be visible before drawing
+          // Small pause to make the cursor movement readable
           if (delay > 0) {
-            await new Promise((resolve) => setTimeout(resolve, Math.min(delay * 0.4, 150)));
+            await new Promise((resolve) => setTimeout(resolve, Math.min(delay * 0.25, 120)));
           }
         }
       }
@@ -376,7 +388,7 @@ export function useCommandExecutor(options: CommandExecutorOptions) {
         };
       }
     },
-    [executeCommand, animateCursor, animateToolSelection, onCursorMove, aiStore],
+    [executeCommand, animateCursor, animateToolSelection, onCursorMove, aiStore, cursorAnimation],
   );
 
   /**
@@ -416,7 +428,7 @@ export function useCommandExecutor(options: CommandExecutorOptions) {
       if (animateCursor && commands.length > 0) {
         const firstPos = extractCursorPosition(commands[0]);
         if (firstPos) {
-          aiStore.getState().showCursor(firstPos.x, firstPos.y, getToolIcon(commands[0].tool));
+          cursorAnimation.moveTo(firstPos.x, firstPos.y, getToolIcon(commands[0].tool));
         }
       }
 
@@ -465,7 +477,7 @@ export function useCommandExecutor(options: CommandExecutorOptions) {
 
       // Hide cursor after execution
       if (animateCursor) {
-        aiStore.getState().hideCursor();
+        cursorAnimation.hide();
       }
 
       // Clear active AI tool
@@ -503,6 +515,7 @@ export function useCommandExecutor(options: CommandExecutorOptions) {
       getContext,
       historyStore,
       aiStore,
+      cursorAnimation,
       onProgress,
       onComplete,
       onError,
@@ -519,9 +532,9 @@ export function useCommandExecutor(options: CommandExecutorOptions) {
   const cancelExecution = useCallback(() => {
     cancelledRef.current = true;
     // Hide cursor immediately on cancel
-    aiStore.getState().hideCursor();
+    cursorAnimation.hide();
     aiStore.getState().setActiveAITool(null);
-  }, [aiStore]);
+  }, [aiStore, cursorAnimation]);
 
   return {
     executeCommands,
