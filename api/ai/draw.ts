@@ -117,7 +117,7 @@ STRICT OUTPUT RULES:
 - Do not include JSON or command data in the text summary.
 - Commands must be complete, consistent with the user request, and immediately executable.
 - Use integer coordinates within bounds. Avoid placeholders or TODOs.
-- For detailed artwork, generate many commands (50-100+) to achieve precision and quality.
+- For detailed artwork, generate many commands (50-150+) to achieve precision and quality.
 - Prefer quality and detail over brevity - users want impressive, detailed art.
 
 AVAILABLE TOOLS:
@@ -200,7 +200,7 @@ CREATIVE GUIDELINES - BE EXPRESSIVE!
    - Add small decorative touches
 
 BEST PRACTICES:
-1. Break complex drawings into multiple commands - use up to 100 commands for detailed artwork
+1. Break complex drawings into multiple commands - use up to 150 commands for detailed artwork
 2. Use batch_shapes or draw_grid for repetitive patterns
 3. Confirm the action in your response text
 4. If the request is ambiguous, ask for clarification
