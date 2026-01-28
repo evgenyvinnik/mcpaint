@@ -110,15 +110,16 @@ Natural language canvas control via Claude API with SSE streaming. The AI execut
 ## Testing
 
 **Configuration** (`playwright.config.ts`):
-- Chromium only
+- Chromium only, runs against port 11822 (auto-started)
 - 30s test timeout, 10s expect timeout
-- Screenshots/video on failure
+- Screenshots/video on failure (saved to `test-results/`)
 - Visual snapshots with `toHaveScreenshot()` (max 100 pixel diff)
 
 **Test Organization**:
 - `tests/*.spec.ts` - Core tool and menu tests
 - `tests/dialogs/` - Dialog-specific tests
 - `tests/utils/` - Shared utilities (`canvas-helpers.ts`, `dialog-helpers.ts`)
+- `tests/snapshots/` - Visual snapshot baselines
 
 ## Code Conventions
 

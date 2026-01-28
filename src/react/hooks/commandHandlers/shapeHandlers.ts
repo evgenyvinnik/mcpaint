@@ -61,9 +61,9 @@ export const handleRectangle: CommandHandler = (command: DrawingCommand, context
   const style = convertFillMode(fillMode);
   const lw = lineWidth || settings.lineWidth;
 
-  // For "filled" mode without explicit fillColor, use primaryColor (like left-click in Paint)
-  // For "filled_with_outline" mode, fill uses secondaryColor, stroke uses primaryColor
-  const fill = fillColor || (style === "fill" ? settings.primaryColor : settings.secondaryColor);
+  // For "filled" mode without explicit fillColor, use the provided color (or primaryColor as fallback)
+  // This ensures that color: "#8B6914" with fillMode: "filled" fills with #8B6914
+  const fill = fillColor || color || settings.primaryColor;
 
   const x = Math.min(startX, endX);
   const y = Math.min(startY, endY);
@@ -95,8 +95,8 @@ export const handleRoundedRectangle: CommandHandler = (command: DrawingCommand, 
   const style = convertFillMode(fillMode);
   const lw = lineWidth || settings.lineWidth;
 
-  // For "filled" mode without explicit fillColor, use primaryColor (like left-click in Paint)
-  const fill = fillColor || (style === "fill" ? settings.primaryColor : settings.secondaryColor);
+  // For "filled" mode without explicit fillColor, use the provided color (or primaryColor as fallback)
+  const fill = fillColor || color || settings.primaryColor;
 
   const x = Math.min(startX, endX);
   const y = Math.min(startY, endY);
@@ -128,8 +128,8 @@ export const handleEllipse: CommandHandler = (command: DrawingCommand, context: 
   const style = convertFillMode(fillMode);
   const lw = lineWidth || settings.lineWidth;
 
-  // For "filled" mode without explicit fillColor, use primaryColor (like left-click in Paint)
-  const fill = fillColor || (style === "fill" ? settings.primaryColor : settings.secondaryColor);
+  // For "filled" mode without explicit fillColor, use the provided color (or primaryColor as fallback)
+  const fill = fillColor || color || settings.primaryColor;
 
   const x = Math.min(startX, endX);
   const y = Math.min(startY, endY);
@@ -175,8 +175,9 @@ export const handlePolygon: CommandHandler = (command: DrawingCommand, context: 
   const style = convertFillMode(fillMode);
   const lw = lineWidth || settings.lineWidth;
 
-  // For "filled" mode without explicit fillColor, use primaryColor (like left-click in Paint)
-  const fill = fillColor || (style === "fill" ? settings.primaryColor : settings.secondaryColor);
+  // For "filled" mode without explicit fillColor, use the provided color (or primaryColor as fallback)
+  // This ensures that color: "#FFC300" with fillMode: "filled" fills with #FFC300
+  const fill = fillColor || color || settings.primaryColor;
 
   const actualStroke = style === "fill" ? null : strokeColor;
   const actualFill = style === "outline" ? null : fill;
