@@ -72,6 +72,11 @@ export const handleBrush: CommandHandler = (command: DrawingCommand, context: Co
 /**
  * Handle airbrush drawing command
  * Sprays paint with a random pattern
+ *
+ * The airbrush is a slow tool that accumulates paint over time.
+ * The `intensity` parameter controls how many spray bursts happen per point.
+ * Higher intensity = more paint accumulation (simulates holding the airbrush longer).
+ * Default intensity is 20 to produce visible results (real airbrush fires every 5ms).
  */
 export const handleAirbrush: CommandHandler = (command: DrawingCommand, context: CommandContext) => {
   const startTime = Date.now();
@@ -82,19 +87,25 @@ export const handleAirbrush: CommandHandler = (command: DrawingCommand, context:
     return { command, status: "failed", error: "Invalid command type", duration: Date.now() - startTime };
   }
 
-  const { path, x, y, color, size } = command.params;
+  const { path, x, y, color, size, intensity } = command.params;
   const drawColor = color || settings.primaryColor;
   const spraySize = size || settings.airbrushSize;
+  // Default intensity of 20 simulates ~100ms of spraying (20 * 5ms interval)
+  const sprayIntensity = Math.max(1, Math.min(100, intensity ?? 20));
 
   ctx.save();
 
   if (path) {
     const points = parsePath(path);
     for (const point of points) {
-      sprayAirbrush(ctx, point.x, point.y, drawColor, spraySize);
+      for (let i = 0; i < sprayIntensity; i++) {
+        sprayAirbrush(ctx, point.x, point.y, drawColor, spraySize);
+      }
     }
   } else if (x !== undefined && y !== undefined) {
-    sprayAirbrush(ctx, x, y, drawColor, spraySize);
+    for (let i = 0; i < sprayIntensity; i++) {
+      sprayAirbrush(ctx, x, y, drawColor, spraySize);
+    }
   }
   ctx.restore();
 

@@ -98,6 +98,8 @@ CREATIVE GUIDELINES - BE EXPRESSIVE!
 
 2. **VARY YOUR TOOLS**: Don't just use lines and circles! Consider:
    - Airbrush: Great for gradients, clouds, soft effects, shading, spray paint style
+     * Use intensity param (1-100) to control paint density. Default is 20.
+     * Higher intensity = more paint. Use 50-100 for solid clouds/gradients, 10-20 for subtle shading.
    - Brush: For bold strokes, painting effects, thicker lines with texture
    - Fill: To quickly color large areas with solid colors
    - Text: Add labels, signs, titles, or decorative text with different fonts

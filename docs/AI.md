@@ -90,8 +90,9 @@ interface AirbrushCommand {
     y?: number;
     color?: string;
     size?: number;             // Spray radius
-    density?: number;          // 1-100, particles per spray
-    duration?: number;         // ms to spray at single point
+    intensity?: number;        // 1-100, spray bursts per point (default: 20)
+                               // Higher = more paint accumulation
+                               // Simulates holding the airbrush longer
   };
 }
 

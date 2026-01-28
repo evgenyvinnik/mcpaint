@@ -116,6 +116,10 @@ export interface BrushCommand {
 
 /**
  * Airbrush command - spray paint effect
+ *
+ * The airbrush is a slow tool that accumulates paint over time.
+ * The `intensity` parameter controls how many spray bursts happen per point.
+ * Higher intensity = more paint accumulation (simulates holding the airbrush longer).
  */
 export interface AirbrushCommand {
   tool: "airbrush";
@@ -130,10 +134,8 @@ export interface AirbrushCommand {
     color?: string;
     /** Spray radius */
     size?: number;
-    /** Particles per spray 1-100 */
-    density?: number;
-    /** Duration in ms for single point spray */
-    duration?: number;
+    /** Spray bursts per point 1-100 (default: 20). Higher = more paint accumulation */
+    intensity?: number;
   };
 }
 
