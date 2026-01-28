@@ -66,13 +66,13 @@ export function MessageList({ messages, streamContent, isStreaming }: MessageLis
             justifyContent: "center",
             height: "100%",
             color: "#000000",
-            fontSize: "12px",
+            fontSize: "13px",
             textAlign: "center",
             padding: "20px",
           }}
         >
           <div style={{ marginBottom: "8px" }}>{t("Ask the AI to draw something!")}</div>
-          <div style={{ fontSize: "11px" }}>{t('Try: "Draw a red circle" or "Fill the canvas with blue"')}</div>
+          <div style={{ fontSize: "13px" }}>{t('Try: "Draw a red circle" or "Fill the canvas with blue"')}</div>
         </div>
       ) : (
         <>

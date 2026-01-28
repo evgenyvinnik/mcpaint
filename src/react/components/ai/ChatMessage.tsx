@@ -42,7 +42,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
       {/* Role label - like old IRC/IM clients */}
       <div
         style={{
-          fontSize: "10px",
+          fontSize: "12px",
           fontWeight: "bold",
           color: "#000000",
           marginBottom: "2px",
@@ -59,7 +59,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
           padding: "4px 6px",
           backgroundColor: isUser ? "#ffffcc" : "#ffffff",
           color: "#000000",
-          fontSize: "11px",
+          fontSize: "13px",
           lineHeight: "1.3",
           wordBreak: "break-word",
           whiteSpace: "pre-wrap",
@@ -74,7 +74,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
         <div
           className="chat-message-commands"
           style={{
-            fontSize: "10px",
+            fontSize: "12px",
             color: "#000000",
             marginTop: "2px",
             paddingLeft: isUser ? "0" : "2px",
@@ -92,7 +92,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
               userSelect: "none",
             }}
           >
-            <span style={{ fontFamily: "Marlett, monospace", fontSize: "8px" }}>
+            <span style={{ fontFamily: "Marlett, monospace", fontSize: "10px" }}>
               {isExpanded ? "▼" : "▶"}
             </span>
             {t("{{count}} command executed", { count: message.commands!.length })}
@@ -109,7 +109,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
                 maxHeight: "200px",
                 overflowY: "auto",
                 fontFamily: "monospace",
-                fontSize: "9px",
+                fontSize: "11px",
                 lineHeight: "1.4",
               }}
             >

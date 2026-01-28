@@ -39,7 +39,7 @@ export function StreamingMessage({ content, isStreaming }: StreamingMessageProps
       {/* Role label - like old IRC/IM clients */}
       <div
         style={{
-          fontSize: "10px",
+          fontSize: "12px",
           fontWeight: "bold",
           color: "#000000",
           marginBottom: "2px",
@@ -55,7 +55,7 @@ export function StreamingMessage({ content, isStreaming }: StreamingMessageProps
           padding: "4px 6px",
           backgroundColor: "#ffffff",
           color: "#000000",
-          fontSize: "11px",
+          fontSize: "13px",
           lineHeight: "1.3",
           wordBreak: "break-word",
           whiteSpace: "pre-wrap",

@@ -98,7 +98,7 @@ export function ChatInput({ onSend, onCancel, onClear, isStreaming, isExecuting,
           width: "100%",
           resize: "none",
           fontFamily: "inherit",
-          fontSize: "12px",
+          fontSize: "13px",
           padding: "4px",
           boxSizing: "border-box",
           border: "2px inset #ffffff",
@@ -151,7 +151,7 @@ export function ChatInput({ onSend, onCancel, onClear, isStreaming, isExecuting,
       <div
         className="chat-input-hint"
         style={{
-          fontSize: "10px",
+          fontSize: "12px",
           color: "#000000",
           marginTop: "2px",
           textAlign: "right",

@@ -143,7 +143,7 @@ export function AIChatPanel({ canvasRef, isOpen, onClose }: AIChatPanelProps) {
               backgroundColor: "#ffcccc",
               borderBottom: "1px solid #cc0000",
               color: "#cc0000",
-              fontSize: "11px",
+              fontSize: "13px",
             }}
           >
             {error}

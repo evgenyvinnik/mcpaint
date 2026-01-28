@@ -45,7 +45,7 @@ export function ExecutionProgress({ current, total, isExecuting }: ExecutionProg
       <div
         className="execution-progress-label"
         style={{
-          fontSize: "11px",
+          fontSize: "13px",
           marginBottom: "4px",
           color: "#000000",
         }}

@@ -168,14 +168,24 @@ FILL MODES (for shapes):
 - "filled_with_outline": both fill and border
 
 CREATIVE GUIDELINES - BE EXPRESSIVE!
-1. **USE VIBRANT COLORS**: Never use pure black (#000000) or pure white (#FFFFFF)! Use rich, varied colors like:
+1. **CHOOSE REALISTIC COLORS FOR REAL OBJECTS**: Think carefully about what colors things actually are!
+   - Dogs: brown (#8B4513, #A0522D), golden (#DAA520, #D4A574), black (#2D2D2D), white (#F5F5F5), gray (#808080) - NOT purple or blue!
+   - Cats: orange (#E07020), gray (#808080), black (#2D2D2D), white (#F5F5F5), calico patterns - NOT green!
+   - Trees: brown trunk (#8B4513, #654321), green leaves (#228B22, #2E8B57, #006400)
+   - Sky: blue (#87CEEB, #4A90D9), sunset (#FF6B35, #FFB400)
+   - Grass: green (#228B22, #32CD32, #7CFC00)
+   - Water: blue (#1E90FF, #4169E1, #00CED1)
+   - Sun: yellow (#FFD700, #FFA500)
+   - People: skin tones (#FFDAB9, #DEB887, #D2691E, #8B4513)
+   - Houses: realistic brick (#B22222), wood (#DEB887), stone (#808080)
+
+2. **USE VIBRANT COLORS FOR ABSTRACT ART**: For abstract or stylized art, be creative with colors:
    - Warm tones: #FF6B35 (orange), #E63946 (coral red), #FFB400 (golden yellow)
    - Cool tones: #2EC4B6 (teal), #3A86FF (bright blue), #8338EC (purple)
-   - Nature: #06D6A0 (mint), #52B788 (forest green), #F4A261 (sandy orange)
    - Pastels: #FFB5E8 (pink), #B5DEFF (sky blue), #CAFFBF (mint green)
-   - For dark outlines: use #1A1A1A or #2D3436 instead of black
+   - For dark outlines: use #1A1A1A or #2D3436 instead of pure black
 
-2. **VARY YOUR TOOLS**: Don't just use lines and circles! Consider:
+3. **VARY YOUR TOOLS**: Don't just use lines and circles! Consider:
    - Airbrush: Great for gradients, clouds, soft effects, shading, spray paint style
      * Use intensity param (1-100) to control paint density. Default is 20.
      * Higher intensity = more paint. Use 50-100 for solid clouds/gradients, 10-20 for subtle shading.
@@ -185,15 +195,15 @@ CREATIVE GUIDELINES - BE EXPRESSIVE!
    - Pencil: For fine details, sketching, precise pixel work
    - Curves: For smooth organic shapes, waves, flowing lines
 
-3. **MIX FILL MODES**: Combine "filled", "outline", and "filled_with_outline" for depth
+4. **MIX FILL MODES**: Combine "filled", "outline", and "filled_with_outline" for depth
 
-4. **ADD DETAILS**:
+5. **ADD DETAILS**:
    - Use airbrush for shading and atmospheric effects
    - Add text labels where appropriate
    - Layer multiple shapes for complex objects
    - Use different brush sizes for variety
 
-5. **THINK LIKE AN ARTIST**:
+6. **THINK LIKE AN ARTIST**:
    - Add shadows and highlights
    - Use complementary colors for contrast
    - Create depth with overlapping elements
