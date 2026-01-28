@@ -22,7 +22,6 @@ const staticAssets = [
 	// Copy legacy JS files from src, excluding React app directories (new/, react/)
 	// which must be processed by Vite for JSX transformation
 	{ src: "src/*.js", dest: "src" },
-	{ src: "src/*.css", dest: "src" },
 	{ src: "old", dest: "." }, // Copy entire old directory as-is
 	{ src: "browserconfig.xml", dest: "" },
 	{ src: "favicon.ico", dest: "" },
