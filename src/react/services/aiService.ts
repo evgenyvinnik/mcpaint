@@ -4,7 +4,7 @@
  * Parses incoming events and dispatches to callbacks
  */
 
-import type { AIDrawRequest, SSEEvent, DrawingCommand, ChatRole } from "../types/ai";
+import type { AIDrawRequest, ChatRole, DrawingCommand, SSEEvent } from "../types/ai";
 
 /**
  * Callbacks for SSE event handling
@@ -135,43 +135,52 @@ export function sendAIRequest(
 
       const decoder = new TextDecoder();
       let buffer = "";
-      let currentEventType = "";
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
 
         buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop() || "";
+        const blocks = buffer.split("\n\n");
+        buffer = blocks.pop() || "";
 
-        for (const line of lines) {
-          // Parse SSE format
-          if (line.startsWith("event: ")) {
-            currentEventType = line.slice(7).trim();
-          } else if (line.startsWith("data: ")) {
-            const data = line.slice(6);
-            const event = parseSSEEvent(currentEventType, data);
+        for (const block of blocks) {
+          if (!block.trim()) continue;
 
-            if (event) {
-              switch (event.type) {
-                case "token":
-                  callbacks.onToken?.(event.content);
-                  break;
-                case "commands":
-                  callbacks.onCommands?.(event.commands);
-                  break;
-                case "progress":
-                  callbacks.onProgress?.(event.current, event.total);
-                  break;
-                case "done":
-                  callbacks.onDone?.(event.message);
-                  break;
-                case "error":
-                  callbacks.onError?.(event.message);
-                  break;
-              }
+          let eventType = "";
+          let data = "";
+          const lines = block.split("\n");
+
+          for (const line of lines) {
+            if (line.startsWith("event:")) {
+              eventType = line.slice(6).trim();
+            } else if (line.startsWith("data:")) {
+              const chunk = line.slice(5).trim();
+              data = data ? `${data}\n${chunk}` : chunk;
             }
+          }
+
+          if (!eventType || !data) continue;
+
+          const event = parseSSEEvent(eventType, data);
+          if (!event) continue;
+
+          switch (event.type) {
+            case "token":
+              callbacks.onToken?.(event.content);
+              break;
+            case "commands":
+              callbacks.onCommands?.(event.commands);
+              break;
+            case "progress":
+              callbacks.onProgress?.(event.current, event.total);
+              break;
+            case "done":
+              callbacks.onDone?.(event.message);
+              break;
+            case "error":
+              callbacks.onError?.(event.message);
+              break;
           }
         }
       }

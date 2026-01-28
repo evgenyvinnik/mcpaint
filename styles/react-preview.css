@@ -2,91 +2,6 @@
         color-scheme: light;
 }
 
-body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        font-family: "Segoe UI", Tahoma, sans-serif;
-        background: linear-gradient(180deg, #008080 0%, #004f4f 100%);
-        color: #fff;
-}
-
-.react-preview__app-shell {
-        flex: 1 1 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2rem;
-        padding: 2rem 1rem 4rem;
-}
-
-.react-preview__header {
-        text-align: center;
-}
-
-.react-preview__header h1 {
-        margin: 0;
-        font-size: clamp(2rem, 5vw, 3rem);
-        text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
-}
-
-.react-preview__header p {
-        margin: 0.5rem 0 0;
-        font-size: 1.1rem;
-        color: rgba(255, 255, 255, 0.85);
-}
-
-.react-preview__cta-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        justify-content: center;
-}
-
-.react-preview__cta {
-        appearance: none;
-        border: none;
-        border-radius: 999px;
-        background: #ffd400;
-        color: #1a1a1a;
-        font-weight: 600;
-        padding: 0.8rem 1.6rem;
-        cursor: pointer;
-        text-decoration: none;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.react-preview__cta:focus-visible,
-.react-preview__cta:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.3);
-}
-
-.react-preview__cta.secondary {
-        background: rgba(0, 0, 0, 0.45);
-        color: #fff;
-        border: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.react-preview__cta.secondary:focus-visible,
-.react-preview__cta.secondary:hover {
-        background: rgba(0, 0, 0, 0.55);
-}
-
-.react-preview__footer {
-        margin: 0;
-        padding: 0 1rem 2rem;
-        text-align: center;
-        color: rgba(255, 255, 255, 0.75);
-        font-size: 0.85rem;
-}
-
-.react-preview__footer a {
-        color: inherit;
-}
-
 /* Tool Options Panel */
 /* Note: width/height from layout.css (41px x 66px) must be preserved for proper brush grid layout */
 /* Don't add padding/gap here - it reduces available space and causes overflow */
@@ -121,7 +36,7 @@ body {
 }
 
 /* Airbrush chooser - 3 spray pattern options stacked vertically */
-/* Each option scaled to ~20x20px to fit in 41x66px tool-options container */
+/* Each option is 35x18px to fit in 41x66px tool-options container */
 .tool-options .choose-airbrush-size {
         display: flex;
         flex-flow: column !important; /* Override layout.css row wrap */
@@ -129,7 +44,7 @@ body {
         height: 100%;
         align-items: center;
         justify-content: space-around;
-        gap: 1px;
+        gap: 2px;
 }
 
 .tool-options .choose-airbrush-size .chooser-option {

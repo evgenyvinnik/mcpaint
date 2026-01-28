@@ -5,17 +5,17 @@
  * Supports animated visualization with virtual cursor and tool selection
  */
 
-import { useCallback, useRef } from "react";
 import type { RefObject } from "react";
-import type { DrawingCommand, CommandExecutionResult, ExecutionProgress } from "../types/ai";
+import { useCallback, useRef } from "react";
+import { useAIStore } from "../context/state/aiStore";
+import { useHistoryStore } from "../context/state/historyStore";
+import { saveSetting } from "../context/state/persistence";
 import { useSettingsStore } from "../context/state/settingsStore";
 import { useToolStore } from "../context/state/toolStore";
-import { useHistoryStore } from "../context/state/historyStore";
-import { useUIStore } from "../context/state/uiStore";
-import { useAIStore } from "../context/state/aiStore";
-import { saveSetting } from "../context/state/persistence";
-import { commandRegistry, type CommandContext } from "./commandHandlers";
 import { TOOL_IDS, type ToolId } from "../context/state/types";
+import { useUIStore } from "../context/state/uiStore";
+import type { CommandExecutionResult, DrawingCommand, ExecutionProgress } from "../types/ai";
+import { commandRegistry, type CommandContext } from "./commandHandlers";
 import { useVirtualCursor } from "./useVirtualCursor";
 
 /**
@@ -174,6 +174,58 @@ function extractCursorPosition(command: DrawingCommand): { x: number; y: number 
     if (typeof firstPoint.x === "number" && typeof firstPoint.y === "number") {
       return { x: firstPoint.x, y: firstPoint.y };
     }
+  }
+
+  return null;
+}
+
+/**
+ * Parse a path string into points, with downsampling for performance
+ * @param {string} path - Path string in "x1,y1;x2,y2;..." format
+ * @param {number} maxPoints - Maximum points to keep
+ * @returns {Array<{x:number;y:number}>} Parsed points
+ */
+function parsePathPoints(path: string, maxPoints: number = 120): Array<{ x: number; y: number }> {
+  const rawPoints = path
+    .split(";")
+    .map((segment) => {
+      const [x, y] = segment.split(",").map(Number);
+      return Number.isFinite(x) && Number.isFinite(y) ? { x, y } : null;
+    })
+    .filter((point): point is { x: number; y: number } => point !== null);
+
+  if (rawPoints.length <= maxPoints) {
+    return rawPoints;
+  }
+
+  const step = Math.ceil(rawPoints.length / maxPoints);
+  const sampled: Array<{ x: number; y: number }> = [];
+  for (let i = 0; i < rawPoints.length; i += step) {
+    sampled.push(rawPoints[i]);
+  }
+
+  // Ensure the last point is included
+  const last = rawPoints[rawPoints.length - 1];
+  const tail = sampled[sampled.length - 1];
+  if (!tail || tail.x !== last.x || tail.y !== last.y) {
+    sampled.push(last);
+  }
+
+  return sampled;
+}
+
+/**
+ * Extract cursor path points from a command if available
+ * @param {DrawingCommand} command - Command to inspect
+ * @returns {Array<{x:number;y:number}> | null} Path points or null
+ */
+function extractPathPoints(command: DrawingCommand): Array<{ x: number; y: number }> | null {
+  const params = command.params as Record<string, unknown>;
+  if (!params) return null;
+
+  if (typeof params.path === "string" && params.path.includes(";")) {
+    const points = parsePathPoints(params.path);
+    return points.length > 1 ? points : null;
   }
 
   return null;
@@ -347,24 +399,46 @@ export function useCommandExecutor(options: CommandExecutorOptions) {
 
       // Animate cursor to command position
       if (animateCursor) {
-        const position = extractCursorPosition(command);
-        if (position) {
-          const currentCursor = useAIStore.getState().virtualCursor;
-          const startX = currentCursor.visible ? currentCursor.x : position.x;
-          const startY = currentCursor.visible ? currentCursor.y : position.y;
-          const distance = Math.hypot(position.x - startX, position.y - startY);
-          const cursorDuration = Math.min(250, Math.max(60, distance * 0.8));
+        const pathPoints = extractPathPoints(command);
+        if (pathPoints && ["pencil", "brush", "airbrush", "eraser", "draw_path"].includes(command.tool)) {
+          // Estimate duration based on path length for smooth tracing
+          let totalLength = 0;
+          for (let i = 1; i < pathPoints.length; i++) {
+            totalLength += Math.hypot(pathPoints[i].x - pathPoints[i - 1].x, pathPoints[i].y - pathPoints[i - 1].y);
+          }
 
-          await cursorAnimation.animateTo(position.x, position.y, {
-            duration: cursorDuration,
+          const pathDuration = Math.min(700, Math.max(140, totalLength * 0.5));
+          await cursorAnimation.animateAlongPath(pathPoints, {
+            duration: pathDuration,
             toolIcon,
           });
 
-          onCursorMove?.(position.x, position.y, toolIcon);
+          const lastPoint = pathPoints[pathPoints.length - 1];
+          onCursorMove?.(lastPoint.x, lastPoint.y, toolIcon);
 
-          // Small pause to make the cursor movement readable
           if (delay > 0) {
-            await new Promise((resolve) => setTimeout(resolve, Math.min(delay * 0.25, 120)));
+            await new Promise((resolve) => setTimeout(resolve, Math.min(delay * 0.2, 100)));
+          }
+        } else {
+          const position = extractCursorPosition(command);
+          if (position) {
+            const currentCursor = useAIStore.getState().virtualCursor;
+            const startX = currentCursor.visible ? currentCursor.x : position.x;
+            const startY = currentCursor.visible ? currentCursor.y : position.y;
+            const distance = Math.hypot(position.x - startX, position.y - startY);
+            const cursorDuration = Math.min(250, Math.max(60, distance * 0.8));
+
+            await cursorAnimation.animateTo(position.x, position.y, {
+              duration: cursorDuration,
+              toolIcon,
+            });
+
+            onCursorMove?.(position.x, position.y, toolIcon);
+
+            // Small pause to make the cursor movement readable
+            if (delay > 0) {
+              await new Promise((resolve) => setTimeout(resolve, Math.min(delay * 0.25, 120)));
+            }
           }
         }
       }

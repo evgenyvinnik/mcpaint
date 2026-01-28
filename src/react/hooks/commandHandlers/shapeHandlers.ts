@@ -58,9 +58,12 @@ export const handleRectangle: CommandHandler = (command: DrawingCommand, context
 
   const { startX, startY, endX, endY, color, fillColor, fillMode, lineWidth } = command.params;
   const strokeColor = color || settings.primaryColor;
-  const fill = fillColor || settings.secondaryColor;
   const style = convertFillMode(fillMode);
   const lw = lineWidth || settings.lineWidth;
+
+  // For "filled" mode without explicit fillColor, use primaryColor (like left-click in Paint)
+  // For "filled_with_outline" mode, fill uses secondaryColor, stroke uses primaryColor
+  const fill = fillColor || (style === "fill" ? settings.primaryColor : settings.secondaryColor);
 
   const x = Math.min(startX, endX);
   const y = Math.min(startY, endY);
@@ -89,9 +92,11 @@ export const handleRoundedRectangle: CommandHandler = (command: DrawingCommand, 
 
   const { startX, startY, endX, endY, color, fillColor, fillMode, lineWidth } = command.params;
   const strokeColor = color || settings.primaryColor;
-  const fill = fillColor || settings.secondaryColor;
   const style = convertFillMode(fillMode);
   const lw = lineWidth || settings.lineWidth;
+
+  // For "filled" mode without explicit fillColor, use primaryColor (like left-click in Paint)
+  const fill = fillColor || (style === "fill" ? settings.primaryColor : settings.secondaryColor);
 
   const x = Math.min(startX, endX);
   const y = Math.min(startY, endY);
@@ -120,9 +125,11 @@ export const handleEllipse: CommandHandler = (command: DrawingCommand, context: 
 
   const { startX, startY, endX, endY, color, fillColor, fillMode, lineWidth } = command.params;
   const strokeColor = color || settings.primaryColor;
-  const fill = fillColor || settings.secondaryColor;
   const style = convertFillMode(fillMode);
   const lw = lineWidth || settings.lineWidth;
+
+  // For "filled" mode without explicit fillColor, use primaryColor (like left-click in Paint)
+  const fill = fillColor || (style === "fill" ? settings.primaryColor : settings.secondaryColor);
 
   const x = Math.min(startX, endX);
   const y = Math.min(startY, endY);
@@ -139,6 +146,7 @@ export const handleEllipse: CommandHandler = (command: DrawingCommand, context: 
 
 /**
  * Handle polygon drawing command
+ * Accepts points as either [{x, y}, ...] or [[x, y], ...] format
  */
 export const handlePolygon: CommandHandler = (command: DrawingCommand, context: CommandContext) => {
   const startTime = Date.now();
@@ -155,15 +163,25 @@ export const handlePolygon: CommandHandler = (command: DrawingCommand, context: 
     return successResult(command, startTime);
   }
 
+  // Normalize points: convert [[x,y], ...] to [{x,y}, ...] if needed
+  const normalizedPoints = points.map((p: { x: number; y: number } | [number, number]) => {
+    if (Array.isArray(p)) {
+      return { x: p[0], y: p[1] };
+    }
+    return p;
+  });
+
   const strokeColor = color || settings.primaryColor;
-  const fill = fillColor || settings.secondaryColor;
   const style = convertFillMode(fillMode);
   const lw = lineWidth || settings.lineWidth;
+
+  // For "filled" mode without explicit fillColor, use primaryColor (like left-click in Paint)
+  const fill = fillColor || (style === "fill" ? settings.primaryColor : settings.secondaryColor);
 
   const actualStroke = style === "fill" ? null : strokeColor;
   const actualFill = style === "outline" ? null : fill;
 
-  drawPolygon(ctx, points, actualStroke, actualFill, lw, true);
+  drawPolygon(ctx, normalizedPoints, actualStroke, actualFill, lw, true);
 
   return successResult(command, startTime);
 };

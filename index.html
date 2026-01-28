@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>JS Paint - Choose Your Experience</title>
+	<title>JS Paint</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Classic MS Paint in the browser, with extra features. Choose between the modern React version or the classic jQuery app.">
+	<meta name="description" content="Classic MS Paint in the browser, with extra features">
 
 	<!-- Icons -->
 	<link rel="icon" href="/favicon.ico">
@@ -36,22 +36,24 @@
 	<meta name="twitter:creator" content="@isaiahodhner">
 
 	<!-- Stylesheets -->
+	<link rel="stylesheet" href="/styles/normalize.css">
+	<link rel="stylesheet" href="/styles/layout.css" class="flippable-layout-stylesheet">
+	<link rel="stylesheet" href="/styles/print.css" media="print">
+	<link rel="stylesheet" href="/lib/os-gui/build/layout.css" class="flippable-layout-stylesheet">
+	<link rel="stylesheet" href="/lib/os-gui/build/windows-98.css">
+	<link rel="stylesheet" href="/lib/tracky-mouse/core/tracky-mouse.css">
+	<link rel="stylesheet" href="/lib/98.css/98.custom-build.css" class="flippable-layout-stylesheet not-for-modern">
+	<link rel="stylesheet" href="/styles/themes/classic.css">
 	<link rel="stylesheet" href="/styles/react-preview.css">
+	<style>
+		html, body, #root {
+			height: 100%;
+		}
+	</style>
 </head>
 <body>
-	<div class="react-preview__app-shell">
-		<header class="react-preview__header">
-			<h1>Choose your JS Paint experience</h1>
-			<p>Try the new React-based prototype or stay with the classic jQuery-powered app.</p>
-		</header>
-		<div class="react-preview__cta-row">
-			<a class="react-preview__cta" href="/new/">Open React preview</a>
-			<a class="react-preview__cta secondary" href="/old/">Open legacy app</a>
-		</div>
-		<p class="react-preview__footer">
-			You can switch between builds at any time. Bookmark <code>/new/</code> for the modern workspace and
-			<code>/old/</code> for the legacy experience.
-		</p>
-	</div>
+	<script src="/lib/font-detective.js"></script>
+	<div id="root"></div>
+	<script type="module" src="/src/new/main.tsx"></script>
 </body>
 </html>

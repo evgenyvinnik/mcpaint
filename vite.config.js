@@ -5,8 +5,6 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 
 const htmlEntries = {
 	main: resolve(__dirname, "index.html"),
-	// legacy: resolve(__dirname, "old/index.html"), // Exclude from Vite processing
-	reactPreview: resolve(__dirname, "new/index.html"),
 	about: resolve(__dirname, "about.html"),
 	privacy: resolve(__dirname, "privacy.html"),
 	testNewsNewer: resolve(__dirname, "test-news-newer.html"),
@@ -19,10 +17,6 @@ const staticAssets = [
 	{ src: "lib", dest: "." }, // Copy lib directory to dist root, so lib/* goes to dist/lib/*
 	{ src: "styles", dest: "." },
 	{ src: "svg-paint", dest: "." },
-	// Copy legacy JS files from src, excluding React app directories (new/, react/)
-	// which must be processed by Vite for JSX transformation
-	{ src: "src/*.js", dest: "src" },
-	{ src: "old", dest: "." }, // Copy entire old directory as-is
 	{ src: "browserconfig.xml", dest: "" },
 	{ src: "favicon.ico", dest: "" },
 	{ src: "manifest.webmanifest", dest: "" },
