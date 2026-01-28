@@ -213,7 +213,6 @@ export default [
 			"src/app-state.js",
 			"src/copy-inkscape-labels.js",
 			"src/error-handling-basic.js",
-			"svg-paint/svg-paint.js",
 			"localization/**/*.js",
 		],
 		"languageOptions": {
@@ -223,9 +222,6 @@ export default [
 	{
 		"files": [
                         "sync-package.js",
-                        "prune-globals.js",
-                        "cypress/plugins/index.js",
-                        "cypress.config.js",
                         "localization/*.js",
                 ],
                 "languageOptions": {
@@ -246,19 +242,6 @@ export default [
                         },
                 },
         },
-	{
-		"files": [
-			"cypress/**/*.js",
-		],
-		"languageOptions": {
-			"globals": {
-				...globals.mocha,
-				"expect": "readonly",
-				"cy": "readonly",
-				"Cypress": "readonly",
-			},
-		},
-	},
 	// Node scripts
 	{
 		files: ["scripts/**/*.mjs", "scripts/test-server.js"],

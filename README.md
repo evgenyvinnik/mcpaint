@@ -5,7 +5,7 @@
 
 A pixel-perfect web-based MS Paint remake and more... [Try it out!](https://mcpaint.vercel.app)
 
-JS Paint recreates every tool and menu of MS Paint, and even [little-known features](#did-you-know), to a high degree of fidelity.
+MCPaint recreates every tool and menu of MS Paint, and even [little-known features](#did-you-know), to a high degree of fidelity.
 
 It supports themes, additional file types, and accessibility features like a Dwell Clicker and Speech Recognition.
 
@@ -29,7 +29,7 @@ But we want to undo more than three actions.
 We want to edit transparent images.
 We can't just keep using the old Paint.
 
-So that's why I'm making JS Paint.
+So that's why I'm making MCPaint.
 I want to bring good old Paint into the modern era.
 
 
@@ -47,10 +47,10 @@ I want to bring good old Paint into the modern era.
   * **File > Load From URL...** to open an image from the Web.
   * **File > Upload to Imgur** to upload the current image to Imgur.
   * **Paste** supports loading from URLs.
-  * You can create links that will open an image from the Web in JS Paint. For example, this link will start with an isometric grid as a template: <https://jspaint.app/#load:https://i.imgur.com/zJMrWwb.png>
+  * You can create links that will open an image from the Web in MCPaint. For example, this link will start with an isometric grid as a template: <https://mcpaint.vercel.app/#load:https://i.imgur.com/zJMrWwb.png>
   * Rudimentary **multi-user** collaboration support.
     Start up a session at
-    [jspaint.app/#session:multi-user-test](https://jspaint.app/#session:multi-user-test)
+    [mcpaint.vercel.app/#session:multi-user-test](https://mcpaint.vercel.app/#session:multi-user-test)
     and send the link to your friends!
     It isn't seamless; actions by other users interrupt what you're doing, and visa versa.
     Sessions are not private, and you may lose your work at any time.
@@ -99,7 +99,7 @@ Editing Features:
 
 Miscellaneous Improvements:
 
-* [Vertical Color Box mode](https://jspaint.app/#vertical-color-box-mode), accessible from **Extras > Vertical Color Box**
+* [Vertical Color Box mode](https://mcpaint.vercel.app/#vertical-color-box-mode), accessible from **Extras > Vertical Color Box**
 * You can use the Text tool at any zoom level (and it previews the exact pixels that will end up on the canvas).
 * Spellcheck is available in the textbox if your browser supports it.
 * Resize handles are easier to grab than in Windows 10's Paint.
@@ -122,7 +122,7 @@ Half-features:
   (Note: it may open super large, or tiny. There's no option to choose a size when opening.)
 -->
 
-![JS Paint drawing of JS Paint on a phone](images/meta/mobipaint.png)
+![MCPaint drawing of MCPaint on a phone](images/meta/mobipaint.png)
 
 
 #### Limitations:
@@ -132,7 +132,7 @@ A few things with the tools aren't done yet.
 Full clipboard support in the web app requires a browser supporting the [Async Clipboard API w/ Images](https://developers.google.com/web/updates/2019/07/image-support-for-async-clipboard), namely Chrome 76+ at the time of writing.
 
 In other browsers you can still copy with <kbd>Ctrl+C</kbd>, cut with <kbd>Ctrl+X</kbd>, and paste with <kbd>Ctrl+V</kbd>,
-but data copied from JS Paint can only be pasted into other instances of JS Paint.
+but data copied from MCPaint can only be pasted into other instances of MCPaint.
 External images can be pasted in.
 
 
@@ -262,7 +262,7 @@ If you want to add extensive palette support to another application, I've made t
   Try scribbling with the Free-Form Select tool and then doing **Image > Invert**
 
 * These Tips and Tricks from [a tutorial for MS Paint](https://www.albinoblacksheep.com/tutorial/mspaint)
-  also work in JS Paint:
+  also work in MCPaint:
 
 	* [x] Brush Scaling (<kbd>+</kbd> & <kbd>-</kbd> on the number pad to adjust brush size)
 	* [x] "Custom Brushes" (hold <kbd>Shift</kbd> and drag the selection to smear it)
@@ -279,7 +279,7 @@ If you want to add extensive palette support to another application, I've made t
 
 ### PWA
 
-JS Paint can be installed as a Progressive Web App (PWA), although it doesn't work offline yet.
+MCPaint can be installed as a Progressive Web App (PWA), although it doesn't work offline yet.
 Look for the install prompt in the address bar.
 
 PWA features:
@@ -297,16 +297,16 @@ Missing features:
 
 ## Recent Changes
 
-### React Migration (In Progress - December 2024)
+### React Migration Complete (January 2025)
 
-MCPaint is undergoing a major refactoring effort to migrate from jQuery to React. This modernization effort includes:
+MCPaint has been fully migrated from jQuery to React! The legacy jQuery implementation has been removed.
 
-- **Phase 1-6 Complete**: Core application structure, components, and dialogs migrated to React
-- **React Components**: ToolBox, ColorBox, MenuBar, StatusBar, Canvas, and all dialogs
-- **Modern Patterns**: React hooks, TypeScript, Zustand state management
+- **Pure React**: All components built with React hooks and TypeScript
+- **Modern Stack**: Vite, React Compiler, Zustand state management
 - **Windows 98 UI**: OS-GUI library integration with authentic Windows 98 styling
+- **AI Integration**: Natural language canvas control via Claude API
 
-### Recent Refactoring (Late December 2024)
+### Architecture Highlights
 
 - **Canvas Architecture Cleanup**:
   - Extracted reusable hooks: `useCanvasLifecycle`, `useAirbrushEffect`
@@ -351,43 +351,6 @@ See [CLAUDE.md](CLAUDE.md) for architecture details.
 
 ---
 
-## Code Statistics
-
-Compare the legacy jQuery implementation vs the new React implementation:
-
-```bash
-npm run sloc
-```
-
-### Implementation Comparison (January 2026)
-
-| Metric        | Legacy (jQuery) | React (New) | Change |
-|---------------|-----------------|-------------|--------|
-| Files         | 42              | 162         | +120   |
-| Code Lines    | 17,531          | 18,276      | +745   |
-| Comment Lines | 4,100           | 7,106       | +3,006 |
-| Total Lines   | 23,363          | 28,470      | +5,107 |
-
-**📈 Migration Progress**: React implementation is **104.2%** the size of legacy code
-**✨ Result**: Feature-complete with **73% more documentation**!
-
-### By File Type
-
-**Legacy (src/ - jQuery)**
-| Extension | Files | Code Lines |
-|-----------|-------|------------|
-| .js       | 41    | 16,987     |
-| .ts       | 1     | 544        |
-
-**React (src/react + src/new)**
-| Extension | Files | Code Lines |
-|-----------|-------|------------|
-| .ts       | 103   | 11,270     |
-| .tsx      | 52    | 6,474      |
-| .css      | 7     | 532        |
-
----
-
 ## Development Setup
 
 [Clone the repo.](https://help.github.com/articles/cloning-a-repository/)
@@ -402,15 +365,11 @@ Run `npm run format` to automatically fix formatting issues, or `npx eslint --fi
 
 The formatting rules are configured for compatibility with VS Code's built-in formatter.
 
-Run `npm test` to run browser-based tests with Cypress. (It's slow to start up and run tests, unfortunately.)
+Run `npm test` to run browser-based tests with Playwright.
 
-Run `npm run accept` to accept any visual changes.
-This unfortunately re-runs all the tests, rather than accepting results of the previous test, so you could end up with different results than the previous test.
-If you use [GitHub Desktop](https://desktop.github.com/), you can view diffs of images, in four different modes.
+Run `npm run test:update-snapshots` to update visual snapshots after intentional changes.
 
-To open the Cypress UI, first run `npm run test:start-server`, then concurrently `npm run cy:open`
-
-### Web App (https://jspaint.app)
+### Web App
 
 After you've installed dependencies with `npm i`,
 use `npm run dev` to start a live-reloading server.
@@ -429,20 +388,18 @@ See `.vscode/launch.json` for usage instructions.
 
 ## Deployment
 
-JS Paint can be deployed using a regular web server.
+MCPaint can be deployed to any static hosting platform.
 
-Nothing needs to be compiled.
+```bash
+npm run build    # Build to /dist/
+npm run preview  # Preview production build locally
+```
+
+The build output in `/dist/` can be deployed to Vercel, Netlify, GitHub Pages, or any static file server.
 
 ### CORS proxy
 
-Optionally, you can set up a [CORS Anywhere](https://github.com/Rob--W/cors-anywhere) server, for loading images from the web, if you paste a URL into JS Paint, or use the `#load:<URL>` feature with images that are not on the same domain.
-
-By default it will use a [CORS Anywhere instance](https://jspaint-cors-proxy.herokuapp.com) set up to work with [jspaint.app](https://jspaint.app).
-
-It is hosted for free on [Heroku](https://www.heroku.com/),
-and you can set up your own instance and configure it to work with your own domain.
-
-You'll have to find and replace `https://jspaint-cors-proxy.herokuapp.com` with your own instance URL.
+Optionally, you can set up a [CORS Anywhere](https://github.com/Rob--W/cors-anywhere) server, for loading images from the web, if you paste a URL into MCPaint, or use the `#load:<URL>` feature with images that are not on the same domain.
 
 
 ### Multiplayer Support
@@ -450,8 +407,7 @@ You'll have to find and replace `https://jspaint-cors-proxy.herokuapp.com` with 
 Multiplayer support currently relies on Firebase,
 which is not open source software.
 
-You could create a [Firebase Realtime Database](https://firebase.google.com/docs/database/web/start) instance and edit JS Paint's `sessions.js` to point to it,
-replacing the `config` passed to `initializeApp` with the config from the Firebase Console when you set up a Web App.
+You could create a [Firebase Realtime Database](https://firebase.google.com/docs/database/web/start) instance and configure MCPaint to use it.
 
 But the multiplayer mode is very shoddy so far.
 It should be replaced with something open source, more secure, more efficient, and more robust.
@@ -463,7 +419,7 @@ It should be replaced with something open source, more secure, more efficient, a
 Add this to your HTML:
 
 ```html
-<iframe src="https://jspaint.app" width="100%" height="100%"></iframe>
+<iframe src="https://mcpaint.vercel.app" width="100%" height="100%"></iframe>
 ```
 
 #### Start with an image
@@ -471,34 +427,34 @@ Add this to your HTML:
 You can have it load an image from a URL by adding `#load:<URL>` to the URL.
 
 ```html
-<iframe src="https://jspaint.app#load:https://jspaint.app/favicon.ico" width="100%" height="100%"></iframe>
+<iframe src="https://mcpaint.vercel.app#load:https://mcpaint.vercel.app/favicon.ico" width="100%" height="100%"></iframe>
 ```
 
 ### Advanced
 
-If you want to control JS Paint, how it saves/loads files, or access the canvas directly,
+If you want to control MCPaint, how it saves/loads files, or access the canvas directly,
 there is an unstable API.
 
 First you need to [clone the repo](https://help.github.com/articles/cloning-a-repository/),
 so you can point an `iframe` to your local copy.
 
-The local copy of JS Paint has to be hosted on the same web server as the containing page, or more specifically, it has to share the [same origin](https://en.wikipedia.org/wiki/Same-origin_policy).
+The local copy of MCPaint has to be hosted on the same web server as the containing page, or more specifically, it has to share the [same origin](https://en.wikipedia.org/wiki/Same-origin_policy).
 
 Having a local copy also means things won't break any time the API changes.
 
-If JS Paint is cloned to a folder called `jspaint`, which lives in the same folder as the page you want to embed it in, you can use this:
+If MCPaint is cloned to a folder called `mcpaint`, which lives in the same folder as the page you want to embed it in, you can use this:
 
 ```html
-<iframe src="jspaint/index.html" id="jspaint-iframe" width="100%" height="100%"></iframe>
+<iframe src="mcpaint/index.html" id="jspaint-iframe" width="100%" height="100%"></iframe>
 ```
 
-If it lives somewhere else, you may need to add `../` to the start of the path, to go up a level. For example, `src="../../apps/jspaint/index.html"`.
-You can also use an absolute URL, like `src="https://example.com/cool-apps/jspaint/index.html"`.
+If it lives somewhere else, you may need to add `../` to the start of the path, to go up a level. For example, `src="../../apps/mcpaint/index.html"`.
+You can also use an absolute URL, like `src="https://example.com/cool-apps/mcpaint/index.html"`.
 
 #### Changing how files are saved/loaded
 
 You can override the file saving and opening dialogs
-with JS Paint's `systemHooks` API.
+with MCPaint's `systemHooks` API.
 
 ```html
 <script>
@@ -568,7 +524,7 @@ This is clumsy, and in the future there may be a query string parameter to load 
 There's already a query string parameter to load from a URL:
 
 ```html
-<iframe src="https://jspaint.app?load:SOME_URL_HERE"></iframe>
+<iframe src="https://mcpaint.vercel.app?load:SOME_URL_HERE"></iframe>
 ```
 
 But this won't set up the file handle for saving.
@@ -581,9 +537,9 @@ You can define two functions to set the wallpaper, which will be used by **File 
 - [`systemHooks.setWallpaperTiled`][]` = (canvas) => { ... };`
 - [`systemHooks.setWallpaperCentered`][]` = (canvas) => { ... };`
 
-If you define only [`systemHooks.setWallpaperCentered`][], JS Paint will attempt to guess your screen's dimensions and tile the image, applying it by calling your [`systemHooks.setWallpaperCentered`][] function.
+If you define only [`systemHooks.setWallpaperCentered`][], MCPaint will attempt to guess your screen's dimensions and tile the image, applying it by calling your [`systemHooks.setWallpaperCentered`][] function.
 
-If you don't specify [`systemHooks.setWallpaperCentered`][], JS Paint will default to saving a file (`<original file name> wallpaper.png`) using [`systemHooks.showSaveFileDialog`][] and [`systemHooks.writeBlobToHandle`][].
+If you don't specify [`systemHooks.setWallpaperCentered`][], MCPaint will default to saving a file (`<original file name> wallpaper.png`) using [`systemHooks.showSaveFileDialog`][] and [`systemHooks.writeBlobToHandle`][].
 
 Here's a full example supporting a persistent custom wallpaper as a background on the containing page:
 
@@ -657,7 +613,7 @@ but this will break the user preference.
 
 The **Extras > Themes** menu will still work, but the preference won't persist when reloading the page.
 
-In the future there may be a query string parameter to specify the default theme. You could also fork jspaint to change the default theme.
+In the future there may be a query string parameter to specify the default theme. You could also fork MCPaint to change the default theme.
 
 #### Specifying the language
 
@@ -672,12 +628,12 @@ but this will actually **ask the user to reload the application** to change lang
 
 The **Extras > Language** menu will still work, but the user will be bothered to change the language every time they reload the page.
 
-In the future there may be a query string parameter to specify the default language. You could also fork jspaint to change the default language.
+In the future there may be a query string parameter to specify the default language. You could also fork MCPaint to change the default language.
 
 #### Adding custom menus
 
 Not supported yet.
-You could fork jspaint and add your own menus.
+You could fork MCPaint and add your own menus.
 
 #### Accessing the canvas directly
 
@@ -685,7 +641,7 @@ With access to the canvas, you can implement a live preview of your drawing, for
 
 ```js
 var iframe = document.getElementById("jspaint-iframe");
-// contentDocument here refers to the webpage loaded in the iframe, not the image document loaded in jspaint.
+// contentDocument here refers to the webpage loaded in the iframe, not the image document loaded in MCPaint.
 // We're just reaching inside the iframe to get the canvas.
 var canvas = iframe.contentDocument.querySelector(".main-canvas");
 ```
@@ -732,8 +688,8 @@ Arguments:
 - `dialogTitle` (optional): a title for the save dialog.
 
 Note the inversion of control here:
-JS Paint calls your `systemHooks.showSaveFileDialog` function, and then you call JS Paint's `getBlob` function.
-Once `getBlob` resolves, you can call the `savedCallbackUnreliable` function which is defined by JS Paint.
+MCPaint calls your `systemHooks.showSaveFileDialog` function, and then you call MCPaint's `getBlob` function.
+Once `getBlob` resolves, you can call the `savedCallbackUnreliable` function which is defined by MCPaint.
 (Hopefully I can clarify this in the future.)
 
 Also note that this function is responsible for saving the file, not just picking a save location.
@@ -754,7 +710,7 @@ You may reuse your `systemHooks.readBlobFromHandle` function if it's helpful.
 #### <a href="#systemHooks.writeBlobToHandle" id="systemHooks.writeBlobToHandle">async function `systemHooks.writeBlobToHandle(fileHandle, blob)`</a>
 [`systemHooks.writeBlobToHandle`]: #systemHooks.writeBlobToHandle
 
-Define this function to tell JS Paint how to save a file.
+Define this function to tell MCPaint how to save a file.
 
 Arguments:
 - `fileHandle`: a file handle, as defined by your system, representing the file to write to.
@@ -766,7 +722,7 @@ Returns:
 #### <a href="#systemHooks.readBlobFromHandle" id="systemHooks.readBlobFromHandle">async function `systemHooks.readBlobFromHandle(fileHandle)`</a>
 [`systemHooks.readBlobFromHandle`]: #systemHooks.readBlobFromHandle
 
-Define this function to tell JS Paint how to load a file.
+Define this function to tell MCPaint how to load a file.
 
 Arguments:
 - `fileHandle`: a file handle, as defined by your system, representing the file to read from.
@@ -774,7 +730,7 @@ Arguments:
 #### <a href="#systemHooks.setWallpaperTiled" id="systemHooks.setWallpaperTiled">function `systemHooks.setWallpaperTiled(canvas)`</a>
 [`systemHooks.setWallpaperTiled`]: #systemHooks.setWallpaperTiled
 
-Define this function to tell JS Paint how to set the wallpaper. See [Integrating Set as Wallpaper](#integrating-set-as-wallpaper) for an example.
+Define this function to tell MCPaint how to set the wallpaper. See [Integrating Set as Wallpaper](#integrating-set-as-wallpaper) for an example.
 
 Arguments:
 - `canvas`: a `HTMLCanvasElement` with the image to set as the wallpaper.
@@ -782,7 +738,7 @@ Arguments:
 #### <a href="#systemHooks.setWallpaperCentered" id="systemHooks.setWallpaperCentered">function `systemHooks.setWallpaperCentered(canvas)`</a>
 [`systemHooks.setWallpaperCentered`]: #systemHooks.setWallpaperCentered
 
-Define this function to tell JS Paint how to set the wallpaper. See [Integrating Set as Wallpaper](#integrating-set-as-wallpaper) for an example.
+Define this function to tell MCPaint how to set the wallpaper. See [Integrating Set as Wallpaper](#integrating-set-as-wallpaper) for an example.
 
 Arguments:
 - `canvas`: a `HTMLCanvasElement` with the image to set as the wallpaper.
@@ -819,7 +775,7 @@ Arguments:
 - `source_file_handle`: a *corresponding* file handle for the file, as defined by your system.
 
 Sorry for the quirky API.
-The API is new, and parts of it have not been designed at all. This was just a hack that I came to depend on, reaching into the internals of JS Paint to load a file.
+The API is new, and parts of it have not been designed at all. This was just a hack that I came to depend on, reaching into the internals of MCPaint to load a file.
 I decided to document it as the first version of the API, since I'll want a changelog when upgrading my usage of it anyways.
 
 #### <a href="#set_theme" id="set_theme">function `set_theme(theme_file_name)`</a>
@@ -854,8 +810,8 @@ For general project news, click **Extras > Project News** in the app.
 
 ## License
 
-JS Paint is free and open source software, licensed under the permissive [MIT license](https://opensource.org/licenses/MIT).
+MCPaint is free and open source software, licensed under the permissive [MIT license](https://opensource.org/licenses/MIT).
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub Repo stars](https://img.shields.io/github/stars/1j01/jspaint?label=GitHub%20Stars&style=social)](https://github.com/1j01/jspaint/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/1j01/jspaint?style=social)](https://github.com/1j01/jspaint/network/members)
+[![GitHub Repo stars](https://img.shields.io/github/stars/evgenyvinnik/mcpaint?label=GitHub%20Stars&style=social)](https://github.com/evgenyvinnik/mcpaint/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/evgenyvinnik/mcpaint?style=social)](https://github.com/evgenyvinnik/mcpaint/network/members)

@@ -426,17 +426,6 @@ interface Window {
 	default_pencil_size: number;
 	default_stroke_size: number;
 
-	api_for_cypress_tests: {
-		reset_for_next_test: () => void;
-		selected_colors: {
-			foreground: string | CanvasPattern,
-			background: string | CanvasPattern,
-			ternary: string | CanvasPattern,
-		};
-		set_theme: (theme_file_name: string) => void;
-		$: JQueryStatic;
-	};
-
 	// app-localization.js
 	available_languages: string[];
 	loaded_localizations: (language: string, mapping: Record<string, string>) => void; // JSONP callback in the localization files
@@ -483,7 +472,7 @@ interface OSGUIMenuItem {
 	emoji_icon?: string;
 }
 
-// The JS Paint `systemHooks` API
+// The MCPaint `systemHooks` API
 interface SaveFileDialogOptions {
 	formats: FileFormat[];
 	defaultFileName?: string;
@@ -628,7 +617,7 @@ declare class Handles {
 
 interface Rect { x: number; y: number; width: number; height: number; }
 
-// part of os-gui.js which was extracted from jspaint into a library
+// part of os-gui.js which was extracted from mcpaint into a library
 // interface I$FormWindow {
 // 	$form: JQuery<HTMLFormElement>;
 // 	$main: JQuery<HTMLDivElement>;
@@ -878,7 +867,7 @@ interface ImageInfo {
 	source_file_handle?: UserFileHandle,
 }
 
-/** It's up to the user of the API to define this; could be parametrized in a better version of the JS Paint API. */
+/** It's up to the user of the API to define this; could be parametrized in a better version of the MCPaint API. */
 type UserFileHandle = any;
 
 interface VoiceCommand {

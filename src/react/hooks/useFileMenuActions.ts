@@ -162,7 +162,7 @@ export function useFileMenuActions(params: UseFileMenuActionsParams): FileMenuAc
       <!DOCTYPE html>
       <html>
       <head>
-        <title>Print - JS Paint</title>
+        <title>Print - MCPaint</title>
         <style>
           * {
             margin: 0;

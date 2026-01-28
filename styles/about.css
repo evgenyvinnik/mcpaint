@@ -23,7 +23,7 @@ body>section {
 	padding-bottom: var(--section-padding);
 }
 
-/* 
+/*
 Fancy multi-layered image link with a wooden window frame that zooms in on hover.
 
 Hairy problem: causes horizontal scrolling on narrow viewports.
@@ -109,7 +109,7 @@ a[href^="https://98.js.org"]:focus #wooden-window-frame {
 #desktop-app-section .bg {
 	/* matching Under Construction GIF */
 	/* background-color: rgb(254, 231, 48); */
-	/* matching Electron logo as drawn in JS Paint */
+	/* matching Electron logo as drawn in MCPaint */
 	background-color: rgb(0, 255, 128);
 	border: 1px solid black;
 	padding: 5px;

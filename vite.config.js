@@ -7,7 +7,6 @@ const htmlEntries = {
 	main: resolve(__dirname, "index.html"),
 	about: resolve(__dirname, "about.html"),
 	privacy: resolve(__dirname, "privacy.html"),
-	testNewsNewer: resolve(__dirname, "test-news-newer.html"),
 };
 
 const staticAssets = [
@@ -16,7 +15,6 @@ const staticAssets = [
 	{ src: "images", dest: "." },
 	{ src: "lib", dest: "." }, // Copy lib directory to dist root, so lib/* goes to dist/lib/*
 	{ src: "styles", dest: "." },
-	{ src: "svg-paint", dest: "." },
 	{ src: "browserconfig.xml", dest: "" },
 	{ src: "favicon.ico", dest: "" },
 	{ src: "manifest.webmanifest", dest: "" },

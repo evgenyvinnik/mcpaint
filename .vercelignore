@@ -3,9 +3,7 @@ node_modules/
 
 # Test files
 tests/
-cypress/
 playwright.config.ts
-cypress.config.js
 
 # Development files
 *.log

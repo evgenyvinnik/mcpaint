@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-MCPaint is a pixel-perfect MS Paint clone built with React, Vite, Zustand, and IndexedDB. Based on [jspaint.app](https://jspaint.app), it recreates all 16 MS Paint tools with high fidelity. Deployed on Vercel with Edge Functions for AI-powered natural language drawing.
+MCPaint is a pixel-perfect MS Paint clone built with React, Vite, Zustand, and IndexedDB. Based on [JS Paint](https://jspaint.app), it recreates all 16 MS Paint tools with high fidelity. Deployed on Vercel with Edge Functions for AI-powered natural language drawing.
 
 ## Quick Start
 

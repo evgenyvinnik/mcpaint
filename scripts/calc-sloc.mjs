@@ -41,8 +41,6 @@ const IGNORE_DIRS = new Set([
   ".cache",
   ".vercel",
   ".turbo",
-  "cypress/screenshots",
-  "cypress/videos",
   "lib",
   "help",
 ]);
