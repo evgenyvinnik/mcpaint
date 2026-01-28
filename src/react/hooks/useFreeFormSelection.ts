@@ -115,7 +115,7 @@ export function useFreeFormSelection({
       // Start a new free-form selection
       const canvas = canvasRef.current;
       if (canvas) {
-        const canvasCtx = canvas.getContext("2d");
+        const canvasCtx = canvas.getContext("2d", { willReadFrequently: true });
         if (canvasCtx) saveState(canvasCtx.getImageData(0, 0, canvas.width, canvas.height));
       }
 

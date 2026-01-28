@@ -114,7 +114,7 @@ export function useCanvasEventHandlers(params: UseCanvasEventHandlersParams): Ca
       const canvas = canvasRef.current;
       if (!canvas) return;
 
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
       if (!ctx) return;
 
       const { x, y } = drawing.getCanvasCoords(e);
@@ -264,7 +264,7 @@ export function useCanvasEventHandlers(params: UseCanvasEventHandlersParams): Ca
       const canvas = canvasRef.current;
       if (!canvas) return;
 
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
       if (!ctx) return;
 
       const { x, y } = drawing.getCanvasCoords(e);
@@ -332,7 +332,7 @@ export function useCanvasEventHandlers(params: UseCanvasEventHandlersParams): Ca
       const canvas = canvasRef.current;
       if (!canvas) return;
 
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
       if (!ctx) return;
 
       const { x, y } = drawing.getCanvasCoords(e);

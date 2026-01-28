@@ -119,7 +119,7 @@ export function CanvasResizeHandles({ canvasWidth, canvasHeight, onResize, conta
   const paddingRef = useRef<Padding>({ left: 0, top: 0 });
 
   // Render counter to trigger re-renders when padding needs update
-  const [renderKey, setRenderKey] = useState(0);
+  const [_renderKey, setRenderKey] = useState(0);
 
   const dragStateRef = useRef<{
     xAxis: HandleAxis;
@@ -140,46 +140,27 @@ export function CanvasResizeHandles({ canvasWidth, canvasHeight, onResize, conta
   onResizeRef.current = onResize;
 
   // Update cached padding when container or dimensions change
+  // Uses double-RAF retry pattern to handle cases where containerRef isn't ready on mount
   useEffect(() => {
+    let rafId2: number | null = null;
+
     const updatePadding = () => {
       const container = containerRef.current;
-      if (!container) return;
+      if (!container) return false;
       const styles = window.getComputedStyle(container);
       paddingRef.current = {
         left: parseFloat(styles.paddingLeft) || 0,
         top: parseFloat(styles.paddingTop) || 0,
       };
       setRenderKey((n) => n + 1);
+      return true;
     };
 
     // Use requestAnimationFrame to ensure DOM has painted
-    const rafId = requestAnimationFrame(updatePadding);
-    return () => cancelAnimationFrame(rafId);
-  }, [containerRef, canvasWidth, canvasHeight, magnification]);
-
-  // Force recalculation on mount after containerRef becomes available
-  useEffect(() => {
-    let rafId2: number | null = null;
-
     const rafId1 = requestAnimationFrame(() => {
-      if (containerRef.current) {
-        const styles = window.getComputedStyle(containerRef.current);
-        paddingRef.current = {
-          left: parseFloat(styles.paddingLeft) || 0,
-          top: parseFloat(styles.paddingTop) || 0,
-        };
-        setRenderKey((n) => n + 1);
-      } else {
-        rafId2 = requestAnimationFrame(() => {
-          if (containerRef.current) {
-            const styles = window.getComputedStyle(containerRef.current);
-            paddingRef.current = {
-              left: parseFloat(styles.paddingLeft) || 0,
-              top: parseFloat(styles.paddingTop) || 0,
-            };
-            setRenderKey((n) => n + 1);
-          }
-        });
+      if (!updatePadding()) {
+        // Retry once more if container wasn't ready
+        rafId2 = requestAnimationFrame(updatePadding);
       }
     });
 
@@ -187,7 +168,7 @@ export function CanvasResizeHandles({ canvasWidth, canvasHeight, onResize, conta
       cancelAnimationFrame(rafId1);
       if (rafId2 != null) cancelAnimationFrame(rafId2);
     };
-  }, [containerRef]);
+  }, [containerRef, canvasWidth, canvasHeight, magnification]);
 
   const handlePointerDown = useCallback(
     (xAxis: HandleAxis, yAxis: HandleAxis, e: React.PointerEvent) => {

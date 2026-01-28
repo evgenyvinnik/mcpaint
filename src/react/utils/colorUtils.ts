@@ -19,7 +19,7 @@ export function getRgbaFromColor(color: string): [number, number, number, number
   const canvas = document.createElement("canvas");
   canvas.width = 1;
   canvas.height = 1;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
   if (!ctx) return [0, 0, 0, 255];
 
   ctx.fillStyle = color;
