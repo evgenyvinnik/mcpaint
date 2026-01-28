@@ -17,8 +17,6 @@ const staticAssets = [
 	{ src: "help", dest: "." },
 	{ src: "images", dest: "." },
 	{ src: "lib", dest: "." }, // Copy lib directory to dist root, so lib/* goes to dist/lib/*
-	{ src: "localization", dest: "." },
-	{ src: "public/locales/*", dest: "locales" },
 	{ src: "styles", dest: "." },
 	{ src: "svg-paint", dest: "." },
 	// Copy legacy JS files from src, excluding React app directories (new/, react/)
