@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>JS Paint - Choose Your Experience</title>
+	<title>JS Paint</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Classic MS Paint in the browser, with extra features. Choose between the modern React version or the classic jQuery app.">
+	<meta name="description" content="Classic MS Paint in the browser, with extra features">
 
 	<!-- Icons -->
 	<link rel="icon" href="/assets/favicon-Dqc3y7HU.ico">
@@ -36,22 +36,18 @@
 	<meta name="twitter:creator" content="@isaiahodhner">
 
 	<!-- Stylesheets -->
-  <link rel="stylesheet" crossorigin href="/assets/react-preview-CNfuJqGK.css">
+	<link rel="stylesheet" href="data:text/css;base64,Cmh0bWwsIGJvZHksIC5qc3BhaW50IHsKCXdpZHRoOiAxMDAlOwoJaGVpZ2h0OiAxMDAlOwoJbWFyZ2luOiAwOwoJcGFkZGluZzogMDsKCWJvcmRlcjogMDsKCW92ZXJmbG93OiBoaWRkZW47Cn0KCi5jYW52YXMtYXJlYSwKLm1haW4tY2FudmFzIHsKCXBvc2l0aW9uOiBmaXhlZDsKCWxlZnQ6IDA7Cgl0b3A6IDA7CgltYXgtd2lkdGg6IDEwMCU7Cgl3aWR0aDogYXV0byAhaW1wb3J0YW50OwoJaGVpZ2h0OiBhdXRvICFpbXBvcnRhbnQ7Cglib3JkZXI6IDAgIWltcG9ydGFudDsKfQoKLndpbmRvdywKLmNhbnZhcy1hcmVhIC5oYW5kbGUsCi5jYW52YXMtYXJlYSAuZ3JhYi1yZWdpb24sCi5zdGF0dXMtYXJlYSwKLm1lbnVzLAouY29tcG9uZW50LWFyZWEsCi5zZWxlY3Rpb24sCi50ZXh0Ym94LAouaGVscGVyLWxheWVyLApidXR0b24sCi50cmFja3ktbW91c2UtaG92ZXItaGFsbywKLnRyYWNreS1tb3VzZS1kd2VsbC1pbmRpY2F0b3IgewoJZGlzcGxheTogbm9uZSAhaW1wb3J0YW50Owp9CgoqIHsKCWJhY2tncm91bmQ6IHRyYW5zcGFyZW50ICFpbXBvcnRhbnQ7Cn0K" media="print">
+	<style>
+		html, body, #root {
+			height: 100%;
+		}
+	</style>
+  <script type="module" crossorigin src="/assets/main-C89A7_j-.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/main-D3XyltCU.css">
+  <link rel="stylesheet" crossorigin href="/assets/classic-CUyDAFPE.css">
 </head>
 <body>
-	<div class="react-preview__app-shell">
-		<header class="react-preview__header">
-			<h1>Choose your JS Paint experience</h1>
-			<p>Try the new React-based prototype or stay with the classic jQuery-powered app.</p>
-		</header>
-		<div class="react-preview__cta-row">
-			<a class="react-preview__cta" href="/new/">Open React preview</a>
-			<a class="react-preview__cta secondary" href="/old/">Open legacy app</a>
-		</div>
-		<p class="react-preview__footer">
-			You can switch between builds at any time. Bookmark <code>/new/</code> for the modern workspace and
-			<code>/old/</code> for the legacy experience.
-		</p>
-	</div>
+	<script src="/lib/font-detective.js"></script>
+	<div id="root"></div>
 </body>
 </html>

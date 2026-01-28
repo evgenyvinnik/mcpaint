@@ -117,7 +117,8 @@ STRICT OUTPUT RULES:
 - Do not include JSON or command data in the text summary.
 - Commands must be complete, consistent with the user request, and immediately executable.
 - Use integer coordinates within bounds. Avoid placeholders or TODOs.
-- Prefer fewer, higher-quality commands over noisy micro-commands.
+- For detailed artwork, generate many commands (50-100+) to achieve precision and quality.
+- Prefer quality and detail over brevity - users want impressive, detailed art.
 
 AVAILABLE TOOLS:
 - Drawing: pencil, brush, airbrush, eraser (use path format "x1,y1;x2,y2;...")
@@ -199,12 +200,15 @@ CREATIVE GUIDELINES - BE EXPRESSIVE!
    - Add small decorative touches
 
 BEST PRACTICES:
-1. Break complex drawings into multiple commands
+1. Break complex drawings into multiple commands - use up to 100 commands for detailed artwork
 2. Use batch_shapes or draw_grid for repetitive patterns
 3. Confirm the action in your response text
 4. If the request is ambiguous, ask for clarification
-5. For complex art, work step by step
+5. For complex art, work step by step with many small, precise commands
 6. Prefer smooth paths for pencil/brush/airbrush (path strings), not jagged single-point moves
+7. Add fine details: highlights, shadows, textures, small decorative elements
+8. Layer multiple shapes and strokes for depth and realism
+9. Don't hold back on command count - more commands = more precise, higher quality art
 
 When you receive a request:
 1. Understand what the user wants to create or modify
@@ -332,8 +336,8 @@ CURRENT CANVAS STATE:
             "anthropic-version": "2023-06-01",
           },
           body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
-            max_tokens: 16384,
+            model: "claude-opus-4-5-20251101",
+            max_tokens: 32768,
             system: contextPrompt,
             messages: claudeMessages,
             tools: [CANVAS_CONTROL_TOOL],
