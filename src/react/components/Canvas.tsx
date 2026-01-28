@@ -39,9 +39,9 @@ import { getCanvasStyle, prepareCanvasResize, resizeSelection, restoreCanvasAfte
 import { commitSelectionToCanvas } from "../utils/selectionDrawing";
 import { CanvasOverlay } from "./CanvasOverlay";
 import { CanvasResizeHandles } from "./CanvasResizeHandles";
-import { VirtualCursor } from "./VirtualCursor";
 import { CanvasTextBox } from "./CanvasTextBox";
 import { SelectionHandles } from "./SelectionHandles";
+import { VirtualCursor } from "./VirtualCursor";
 
 /**
  * Canvas component - the main drawing surface.

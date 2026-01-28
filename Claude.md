@@ -74,7 +74,7 @@ npm run sloc                 # Compare legacy vs React implementation line count
 - Orchestrates specialized hooks for drawing, selection, shapes, text
 - `useCanvasEventHandlers` - Centralized event delegation to tool-specific hooks
 - `useCanvasLifecycle` - Initialization and cleanup
-- Module-level state persists canvas data across React remounts
+- Module-level state persists canvas data across React remounts (critical for HMR and Strict Mode)
 
 **Canvas Hooks** (`src/react/hooks/`) - Organized by domain:
 - Drawing: `useCanvasDrawing`, `useAirbrushEffect`
@@ -156,6 +156,16 @@ Playwright tests run against the React app at `http://localhost:11822/new/` (sep
   - `selection-helpers.ts` - Selection tool helpers
   - `test-helpers.ts` - Common setup and assertions
 
+**Running Specific Tests:**
+```bash
+npm run test -- tests/tools.spec.ts           # Single file
+npm run test -- tests/dialogs/                # All dialog tests
+npm run test -- -g "pencil tool"              # Tests matching pattern
+npm run test -- --project=chromium            # Specific browser (default)
+npm run test:headed                           # With visible browser
+npm run test:debug                            # Step through tests
+```
+
 **Configuration** (`playwright.config.ts`):
 - Chromium only (no Firefox/Safari)
 - 30s test timeout, 10s expect timeout
@@ -175,6 +185,11 @@ Run `npm run test:update-snapshots` after intentional visual changes.
 **JSDoc** - All React functions require JSDoc with `@param` and `@returns` types.
 
 **TypeScript** - Uses JSDoc type annotations (not `.d.ts` files). Run `npm run lint-tsc-react` to check.
+
+**Formatting Workflow**:
+- `npm run lint` - Check all issues (spelling, types, style)
+- `npm run format` - Auto-fix React code formatting with Prettier
+- `npm run lint-eslint` - Check ESLint only (includes code quality rules)
 
 **Path Aliases** (in tsconfig.json):
 - `@/*` → `src/*`

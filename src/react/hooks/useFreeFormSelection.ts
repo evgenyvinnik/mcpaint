@@ -1,7 +1,7 @@
-import { useCallback, useRef, RefObject } from "react";
-import type { Selection } from "../context/state/types";
-import { drawFreeFormPreview, clearOverlay, commitSelectionToCanvas } from "../utils/selectionDrawing";
+import { RefObject, useCallback, useRef } from "react";
 import { useSettingsStore } from "../context/state/settingsStore";
+import type { Selection } from "../context/state/types";
+import { clearOverlay, commitSelectionToCanvas, drawFreeFormPreview } from "../utils/selectionDrawing";
 
 interface UseFreeFormSelectionProps {
   canvasRef: RefObject<HTMLCanvasElement | null>;

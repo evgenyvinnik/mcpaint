@@ -21,7 +21,10 @@ const staticAssets = [
 	{ src: "public/locales/*", dest: "locales" },
 	{ src: "styles", dest: "." },
 	{ src: "svg-paint", dest: "." },
-	{ src: "src", dest: "." }, // Copy entire src directory for legacy app
+	// Copy legacy JS files from src, excluding React app directories (new/, react/)
+	// which must be processed by Vite for JSX transformation
+	{ src: "src/*.js", dest: "src" },
+	{ src: "src/*.css", dest: "src" },
 	{ src: "old", dest: "." }, // Copy entire old directory as-is
 	{ src: "browserconfig.xml", dest: "" },
 	{ src: "favicon.ico", dest: "" },
@@ -33,7 +36,7 @@ const staticAssets = [
 
 export default defineConfig({
 	root: ".",
-	publicDir: false,
+	publicDir: "public",
 	appType: "mpa",
 	server: {
 		host: "0.0.0.0",

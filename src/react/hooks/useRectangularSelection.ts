@@ -1,7 +1,7 @@
-import { useCallback, useRef, RefObject } from "react";
-import type { Selection } from "../context/state/types";
-import { drawRectangularPreview, clearOverlay, commitSelectionToCanvas } from "../utils/selectionDrawing";
+import { RefObject, useCallback, useRef } from "react";
 import { useSettingsStore } from "../context/state/settingsStore";
+import type { Selection } from "../context/state/types";
+import { clearOverlay, commitSelectionToCanvas, drawRectangularPreview } from "../utils/selectionDrawing";
 
 interface UseRectangularSelectionProps {
   canvasRef: RefObject<HTMLCanvasElement | null>;
