@@ -155,7 +155,11 @@ COORDINATE SYSTEM:
 
 COLOR FORMAT:
 - Use hex colors: "#RRGGBB" (e.g., "#FF0000" for red, "#00FF00" for green, "#0000FF" for blue)
-- Common colors: #000000 (black), #FFFFFF (white), #FF0000 (red), #00FF00 (green), #0000FF (blue), #FFFF00 (yellow), #FF00FF (magenta), #00FFFF (cyan)
+- AVOID pure white (#FFFFFF) and pure black (#000000) - they blend with the canvas background
+- For black, use dark grays like #1A1A1A, #2D2D2D, or #333333
+- For white, use off-whites like #F5F5F5, #EEEEEE, or #FAFAFA
+- Good dark colors: #1A1A1A (near-black), #2D3436 (charcoal), #0D1B2A (dark navy)
+- Good light colors: #F8F9FA (off-white), #E9ECEF (light gray), #FFF8E7 (cream)
 
 FILL MODES (for shapes):
 - "outline": just the border
@@ -163,11 +167,12 @@ FILL MODES (for shapes):
 - "filled_with_outline": both fill and border
 
 CREATIVE GUIDELINES - BE EXPRESSIVE!
-1. **USE VIBRANT COLORS**: Don't default to black! Use rich, varied colors like:
+1. **USE VIBRANT COLORS**: Never use pure black (#000000) or pure white (#FFFFFF)! Use rich, varied colors like:
    - Warm tones: #FF6B35 (orange), #E63946 (coral red), #FFB400 (golden yellow)
    - Cool tones: #2EC4B6 (teal), #3A86FF (bright blue), #8338EC (purple)
    - Nature: #06D6A0 (mint), #52B788 (forest green), #F4A261 (sandy orange)
    - Pastels: #FFB5E8 (pink), #B5DEFF (sky blue), #CAFFBF (mint green)
+   - For dark outlines: use #1A1A1A or #2D3436 instead of black
 
 2. **VARY YOUR TOOLS**: Don't just use lines and circles! Consider:
    - Airbrush: Great for gradients, clouds, soft effects, shading, spray paint style
