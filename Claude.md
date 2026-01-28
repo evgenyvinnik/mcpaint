@@ -127,12 +127,63 @@ Natural language canvas control via Claude API with SSE streaming. The AI execut
 - JSDoc with `@param` and `@returns` for all React functions
 - TypeScript uses JSDoc annotations (not `.d.ts` files)
 - Path aliases: `@/*` → `src/*`, `@react/*` → `src/react/*`
+- **Never use the color `#1e003c`** in any code, styles, or generated content
 
 ## Drawing Tools
 
 16 tools: Free-Form Select, Rectangular Select, Eraser, Fill (flood fill), Pick Color (eyedropper), Magnifier (1x-8x zoom), Pencil, Brush, Airbrush, Text, Line (Bresenham), Curve (cubic bezier), Rectangle, Polygon, Ellipse, Rounded Rectangle.
 
+## Themes
+
+5 themes in `styles/themes/`: `classic.css` (Windows 98), `dark.css`, `modern.css`, `winter.css` (festive), `occult.css`. Accessible via **Extras > Themes**.
+
+## File Formats
+
+**Images**: PNG, BMP (monochrome/16/256/24-bit), TIFF, PDF (read), WebP, GIF, JPEG, SVG (read), ICO (read).
+
+**Palettes**: 30+ formats via AnyPalette.js including RIFF (.pal), GIMP (.gpl), Adobe (.aco/.ase/.act), Paint.NET (.txt), Paint Shop Pro (.psppalette), and CSS color extraction.
+
+## Critical Patterns
+
+### Canvas Persistence Anti-Pattern
+
+**Never save to IndexedDB in cleanup functions.** React may clear the canvas DOM before cleanup runs, causing `getImageData()` to return empty pixels that overwrite valid data.
+
+```typescript
+// ❌ WRONG - cleanup may capture blank canvas
+return () => {
+    const imageData = ctx.getImageData(...);
+    saveSetting("savedCanvas", imageData); // May save corrupted data!
+};
+
+// ✅ CORRECT - save during drawing operations only
+function saveHistoryState(operationName: string) {
+    const imageData = ctx.getImageData(...);
+    saveSetting("savedCanvas", imageData); // Canvas has valid data here
+}
+```
+
+See [docs/CANVAS_PERSISTENCE.md](docs/CANVAS_PERSISTENCE.md) for the full two-tier strategy.
+
+### Selector Hook Pattern
+
+Always use `useShallow` with Zustand selectors returning objects to prevent unnecessary re-renders:
+
+```typescript
+// ✅ Targeted subscription with memoization
+const { primaryColor, secondaryColor } = useColors();
+
+// ❌ Avoid accessing store directly with object returns
+const state = useSettingsStore(state => ({ a: state.a, b: state.b }));
+```
+
+## Environment Variables
+
+- `ANTHROPIC_API_KEY` - Required for AI features. Set in Vercel environment or `.env.local` for local dev.
+
 ## Debugging
 
 - **Clear IndexedDB**: DevTools > Application > IndexedDB > delete `mcpaint-db`
 - **VS Code**: Launch config in `.vscode/launch.json` for Chrome debugging
+- **Dimension mismatch**: If canvas doesn't restore after refresh, check console for dimension warnings
+- **HMR state loss**: Module-level persistence only works within same page session; this is expected

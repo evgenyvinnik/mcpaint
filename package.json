@@ -67,6 +67,7 @@
   "homepage": "https://github.com/evgenyvinnik/mcpaint",
   "author": "Evgeny Vinnik (https://github.com/evgenyvinnik)",
   "dependencies": {
+    "@vercel/analytics": "^1.6.1",
     "i18next": "^25.7.3",
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-http-backend": "^3.0.2",

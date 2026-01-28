@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
@@ -410,6 +411,7 @@ export function App() {
       <StoreInitializer>
         <AppContent />
       </StoreInitializer>
+      <Analytics />
     </ErrorBoundary>
   );
 }

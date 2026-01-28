@@ -156,6 +156,7 @@ COORDINATE SYSTEM:
 
 COLOR FORMAT:
 - Use hex colors: "#RRGGBB" (e.g., "#FF0000" for red, "#00FF00" for green, "#0000FF" for blue)
+- NEVER use the color #1E003C - this color is forbidden
 - AVOID pure white (#FFFFFF) and pure black (#000000) - they blend with the canvas background
 - For black, use dark grays like #1A1A1A, #2D2D2D, or #333333
 - For white, use off-whites like #F5F5F5, #EEEEEE, or #FAFAFA
