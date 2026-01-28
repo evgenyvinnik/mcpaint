@@ -386,14 +386,14 @@ export function CanvasResizeHandles({ canvasWidth, canvasHeight, onResize, conta
     }
 
     return positions;
-  };
+  }, [canvasWidth, canvasHeight, magnification, padding.left, padding.top]);
 
   // Render resize ghost outline when dragging - matching Handles.js
   const ghostStyle: React.CSSProperties | undefined = ghostRect
     ? {
         position: "absolute",
-        left: `${ghostRect.x * magnification + getContainerPadding().left}px`,
-        top: `${ghostRect.y * magnification + getContainerPadding().top}px`,
+        left: `${ghostRect.x * magnification + padding.left}px`,
+        top: `${ghostRect.y * magnification + padding.top}px`,
         width: `${ghostRect.width * magnification - 2}px`,
         height: `${ghostRect.height * magnification - 2}px`,
         pointerEvents: "none",

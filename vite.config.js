@@ -13,16 +13,16 @@ const htmlEntries = {
 };
 
 const staticAssets = [
-	{ src: "audio", dest: "audio" },
-	{ src: "help", dest: "help" },
-	{ src: "images", dest: "images" },
+	{ src: "audio", dest: "." },
+	{ src: "help", dest: "." },
+	{ src: "images", dest: "." },
 	{ src: "lib", dest: "." }, // Copy lib directory to dist root, so lib/* goes to dist/lib/*
-	{ src: "localization", dest: "localization" },
+	{ src: "localization", dest: "." },
 	{ src: "public/locales/*", dest: "locales" },
-	{ src: "styles", dest: "styles" },
-	{ src: "svg-paint", dest: "svg-paint" },
-	{ src: "src", dest: "src" }, // Copy entire src directory for legacy app
-	{ src: "old", dest: "old" }, // Copy entire old directory as-is
+	{ src: "styles", dest: "." },
+	{ src: "svg-paint", dest: "." },
+	{ src: "src", dest: "." }, // Copy entire src directory for legacy app
+	{ src: "old", dest: "." }, // Copy entire old directory as-is
 	{ src: "browserconfig.xml", dest: "" },
 	{ src: "favicon.ico", dest: "" },
 	{ src: "manifest.webmanifest", dest: "" },
