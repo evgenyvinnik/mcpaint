@@ -297,96 +297,99 @@ export function CanvasResizeHandles({ canvasWidth, canvasHeight, onResize, conta
   const padding = paddingRef.current;
 
   // Calculate handle and grab region positions - matching Handles.js logic exactly
-  const getHandlePositions = useCallback((xAxis: HandleAxis, yAxis: HandleAxis) => {
-    const handleSize = 3;
-    const grabSize = 32;
-    const outset = 4; // Matches app.js canvas_handles outset: 4
-    // Use cached padding (no getComputedStyle call)
-    const offsetLeft = padding.left;
-    const offsetTop = padding.top;
+  const getHandlePositions = useCallback(
+    (xAxis: HandleAxis, yAxis: HandleAxis) => {
+      const handleSize = 3;
+      const grabSize = 32;
+      const outset = 4; // Matches app.js canvas_handles outset: 4
+      // Use cached padding (no getComputedStyle call)
+      const offsetLeft = padding.left;
+      const offsetTop = padding.top;
 
-    const rect = { width: canvasWidth, height: canvasHeight };
+      const rect = { width: canvasWidth, height: canvasHeight };
 
-    // Calculate positions for each axis
-    const positions = { handle: { left: 0, top: 0 }, grabRegion: { left: 0, top: 0, width: 0, height: 0 } };
+      // Calculate positions for each axis
+      const positions = { handle: { left: 0, top: 0 }, grabRegion: { left: 0, top: 0, width: 0, height: 0 } };
 
-    // X-axis calculations - calculate middleStart first as it's needed for start_end
-    let middleStartX = Math.max(
-      (rect.width * magnification) / 2 - grabSize / 2,
-      Math.min(grabSize / 2, (rect.width * magnification) / 3),
-    );
-    let middleEndX = rect.width * magnification - middleStartX;
-    if (middleEndX - middleStartX < magnification) {
-      middleStartX = 0;
-      middleEndX = magnification;
-    }
+      // X-axis calculations - calculate middleStart first as it's needed for start_end
+      let middleStartX = Math.max(
+        (rect.width * magnification) / 2 - grabSize / 2,
+        Math.min(grabSize / 2, (rect.width * magnification) / 3),
+      );
+      let middleEndX = rect.width * magnification - middleStartX;
+      if (middleEndX - middleStartX < magnification) {
+        middleStartX = 0;
+        middleEndX = magnification;
+      }
 
-    const startStartX = -grabSize / 2;
-    const startEndX = Math.min(grabSize / 2, middleStartX);
-    const endStartX = rect.width * magnification - startEndX;
-    const endEndX = rect.width * magnification - startStartX;
+      const startStartX = -grabSize / 2;
+      const startEndX = Math.min(grabSize / 2, middleStartX);
+      const endStartX = rect.width * magnification - startEndX;
+      const endEndX = rect.width * magnification - startStartX;
 
-    // size_only mode: extend middle regions left into unused space of useless handles
-    // (Must happen after middleStartX is used for startEndX calculation above)
-    // See Handles.js lines 209-213
-    const sizeOnlyMiddleStartX = Math.max(-offsetLeft, Math.min(middleStartX, middleEndX - grabSize));
+      // size_only mode: extend middle regions left into unused space of useless handles
+      // (Must happen after middleStartX is used for startEndX calculation above)
+      // See Handles.js lines 209-213
+      const sizeOnlyMiddleStartX = Math.max(-offsetLeft, Math.min(middleStartX, middleEndX - grabSize));
 
-    if (xAxis === HANDLE_START) {
-      positions.handle.left = offsetLeft - outset;
-      positions.grabRegion.left = startStartX + offsetLeft;
-      positions.grabRegion.width = startEndX - startStartX;
-    } else if (xAxis === HANDLE_MIDDLE) {
-      positions.handle.left = (rect.width * magnification - handleSize) / 2 + offsetLeft;
-      positions.grabRegion.left = sizeOnlyMiddleStartX + offsetLeft;
-      positions.grabRegion.width = middleEndX - sizeOnlyMiddleStartX;
-    } else {
-      // HANDLE_END
-      // Match legacy Handles.js: offset + (rect.width * magnification - hs / 2)
-      // Centers handle on the canvas edge
-      positions.handle.left = rect.width * magnification - handleSize / 2 + offsetLeft;
-      positions.grabRegion.left = endStartX + offsetLeft;
-      positions.grabRegion.width = endEndX - endStartX;
-    }
+      if (xAxis === HANDLE_START) {
+        positions.handle.left = offsetLeft - outset;
+        positions.grabRegion.left = startStartX + offsetLeft;
+        positions.grabRegion.width = startEndX - startStartX;
+      } else if (xAxis === HANDLE_MIDDLE) {
+        positions.handle.left = (rect.width * magnification - handleSize) / 2 + offsetLeft;
+        positions.grabRegion.left = sizeOnlyMiddleStartX + offsetLeft;
+        positions.grabRegion.width = middleEndX - sizeOnlyMiddleStartX;
+      } else {
+        // HANDLE_END
+        // Match legacy Handles.js: offset + (rect.width * magnification - hs / 2)
+        // Centers handle on the canvas edge
+        positions.handle.left = rect.width * magnification - handleSize / 2 + offsetLeft;
+        positions.grabRegion.left = endStartX + offsetLeft;
+        positions.grabRegion.width = endEndX - endStartX;
+      }
 
-    // Y-axis calculations - calculate middleStart first as it's needed for start_end
-    let middleStartY = Math.max(
-      (rect.height * magnification) / 2 - grabSize / 2,
-      Math.min(grabSize / 2, (rect.height * magnification) / 3),
-    );
-    let middleEndY = rect.height * magnification - middleStartY;
-    if (middleEndY - middleStartY < magnification) {
-      middleStartY = 0;
-      middleEndY = magnification;
-    }
+      // Y-axis calculations - calculate middleStart first as it's needed for start_end
+      let middleStartY = Math.max(
+        (rect.height * magnification) / 2 - grabSize / 2,
+        Math.min(grabSize / 2, (rect.height * magnification) / 3),
+      );
+      let middleEndY = rect.height * magnification - middleStartY;
+      if (middleEndY - middleStartY < magnification) {
+        middleStartY = 0;
+        middleEndY = magnification;
+      }
 
-    const startStartY = -grabSize / 2;
-    const startEndY = Math.min(grabSize / 2, middleStartY);
-    const endStartY = rect.height * magnification - startEndY;
-    const endEndY = rect.height * magnification - startStartY;
+      const startStartY = -grabSize / 2;
+      const startEndY = Math.min(grabSize / 2, middleStartY);
+      const endStartY = rect.height * magnification - startEndY;
+      const endEndY = rect.height * magnification - startStartY;
 
-    // size_only mode: extend middle regions up into unused space of useless handles
-    // See Handles.js lines 209-213
-    const sizeOnlyMiddleStartY = Math.max(-offsetTop, Math.min(middleStartY, middleEndY - grabSize));
+      // size_only mode: extend middle regions up into unused space of useless handles
+      // See Handles.js lines 209-213
+      const sizeOnlyMiddleStartY = Math.max(-offsetTop, Math.min(middleStartY, middleEndY - grabSize));
 
-    if (yAxis === HANDLE_START) {
-      positions.handle.top = offsetTop - outset;
-      positions.grabRegion.top = startStartY + offsetTop;
-      positions.grabRegion.height = startEndY - startStartY;
-    } else if (yAxis === HANDLE_MIDDLE) {
-      positions.handle.top = (rect.height * magnification - handleSize) / 2 + offsetTop;
-      positions.grabRegion.top = sizeOnlyMiddleStartY + offsetTop;
-      positions.grabRegion.height = middleEndY - sizeOnlyMiddleStartY;
-    } else {
-      // HANDLE_END
-      // Match legacy Handles.js: offset + (rect.height * magnification - hs / 2)
-      // Centers handle on the canvas edge
-      positions.handle.top = rect.height * magnification - handleSize / 2 + offsetTop;
-      positions.grabRegion.top = endStartY + offsetTop;
-      positions.grabRegion.height = endEndY - endStartY;
-    }
+      if (yAxis === HANDLE_START) {
+        positions.handle.top = offsetTop - outset;
+        positions.grabRegion.top = startStartY + offsetTop;
+        positions.grabRegion.height = startEndY - startStartY;
+      } else if (yAxis === HANDLE_MIDDLE) {
+        positions.handle.top = (rect.height * magnification - handleSize) / 2 + offsetTop;
+        positions.grabRegion.top = sizeOnlyMiddleStartY + offsetTop;
+        positions.grabRegion.height = middleEndY - sizeOnlyMiddleStartY;
+      } else {
+        // HANDLE_END
+        // Match legacy Handles.js: offset + (rect.height * magnification - hs / 2)
+        // Centers handle on the canvas edge
+        positions.handle.top = rect.height * magnification - handleSize / 2 + offsetTop;
+        positions.grabRegion.top = endStartY + offsetTop;
+        positions.grabRegion.height = endEndY - endStartY;
+      }
 
-    return positions;
-  }, [canvasWidth, canvasHeight, magnification, padding.left, padding.top]);
+      return positions;
+    },
+    [canvasWidth, canvasHeight, magnification, padding.left, padding.top],
+  );
 
   // Render resize ghost outline when dragging - matching Handles.js
   const ghostStyle: React.CSSProperties | undefined = ghostRect
