@@ -89,6 +89,35 @@ FILL MODES (for shapes):
 - "filled": solid fill, no border
 - "filled_with_outline": both fill and border
 
+CREATIVE GUIDELINES - BE EXPRESSIVE!
+1. **USE VIBRANT COLORS**: Don't default to black! Use rich, varied colors like:
+   - Warm tones: #FF6B35 (orange), #E63946 (coral red), #FFB400 (golden yellow)
+   - Cool tones: #2EC4B6 (teal), #3A86FF (bright blue), #8338EC (purple)
+   - Nature: #06D6A0 (mint), #52B788 (forest green), #F4A261 (sandy orange)
+   - Pastels: #FFB5E8 (pink), #B5DEFF (sky blue), #CAFFBF (mint green)
+
+2. **VARY YOUR TOOLS**: Don't just use lines and circles! Consider:
+   - Airbrush: Great for gradients, clouds, soft effects, shading, spray paint style
+   - Brush: For bold strokes, painting effects, thicker lines with texture
+   - Fill: To quickly color large areas with solid colors
+   - Text: Add labels, signs, titles, or decorative text with different fonts
+   - Pencil: For fine details, sketching, precise pixel work
+   - Curves: For smooth organic shapes, waves, flowing lines
+
+3. **MIX FILL MODES**: Combine "filled", "outline", and "filled_with_outline" for depth
+
+4. **ADD DETAILS**:
+   - Use airbrush for shading and atmospheric effects
+   - Add text labels where appropriate
+   - Layer multiple shapes for complex objects
+   - Use different brush sizes for variety
+
+5. **THINK LIKE AN ARTIST**:
+   - Add shadows and highlights
+   - Use complementary colors for contrast
+   - Create depth with overlapping elements
+   - Add small decorative touches
+
 BEST PRACTICES:
 1. Break complex drawings into multiple commands
 2. Use batch_shapes or draw_grid for repetitive patterns
@@ -98,7 +127,7 @@ BEST PRACTICES:
 
 When you receive a request:
 1. Understand what the user wants to create or modify
-2. Generate appropriate drawing commands
+2. Generate appropriate drawing commands using DIVERSE tools and VIBRANT colors
 3. Provide a brief, friendly response explaining what you did`;
 
 interface Message {

@@ -93,19 +93,20 @@ function getToolIcon(tool: string): string {
 /**
  * Calculate adaptive animation delay based on command count
  * Keeps total animation time reasonable regardless of command count
+ * Uses slower timing for better visual feedback
  * @param {number} totalCommands - Total number of commands to execute
  * @returns {number} Delay in milliseconds per command
  */
 export function calculateAnimationDelay(totalCommands: number): number {
-  const TARGET_MIN_DURATION_MS = 3000; // Minimum 3 seconds for small drawings
-  const TARGET_MAX_DURATION_MS = 8000; // Maximum 8 seconds for complex drawings
-  const MIN_DELAY_MS = 10; // Never faster than 10ms per command
-  const MAX_DELAY_MS = 200; // Never slower than 200ms per command
+  const TARGET_MIN_DURATION_MS = 8000; // Minimum 8 seconds for small drawings
+  const TARGET_MAX_DURATION_MS = 30000; // Maximum 30 seconds for complex drawings
+  const MIN_DELAY_MS = 100; // Never faster than 100ms per command
+  const MAX_DELAY_MS = 500; // Never slower than 500ms per command
 
   if (totalCommands <= 1) return MAX_DELAY_MS;
 
   // Scale delay inversely with command count
-  const targetDuration = Math.min(TARGET_MAX_DURATION_MS, TARGET_MIN_DURATION_MS + totalCommands * 30);
+  const targetDuration = Math.min(TARGET_MAX_DURATION_MS, TARGET_MIN_DURATION_MS + totalCommands * 100);
   const calculatedDelay = targetDuration / totalCommands;
 
   return Math.max(MIN_DELAY_MS, Math.min(MAX_DELAY_MS, calculatedDelay));
@@ -122,9 +123,9 @@ function getDelayFromSpeed(speed: AnimationSpeed, totalCommands: number): number
     case "instant":
       return 0;
     case "fast":
-      return Math.max(10, calculateAnimationDelay(totalCommands) * 0.5);
+      return Math.max(50, calculateAnimationDelay(totalCommands) * 0.5);
     case "slow":
-      return Math.min(300, calculateAnimationDelay(totalCommands) * 2);
+      return Math.min(800, calculateAnimationDelay(totalCommands) * 1.5);
     case "normal":
     default:
       return calculateAnimationDelay(totalCommands);
@@ -349,9 +350,9 @@ export function useCommandExecutor(options: CommandExecutorOptions) {
           aiStore.getState().showCursor(position.x, position.y, toolIcon);
           onCursorMove?.(position.x, position.y, toolIcon);
 
-          // Brief delay for cursor to be visible before drawing
+          // Longer delay for cursor to be visible before drawing
           if (delay > 0) {
-            await new Promise((resolve) => setTimeout(resolve, Math.min(delay, 50)));
+            await new Promise((resolve) => setTimeout(resolve, Math.min(delay * 0.4, 150)));
           }
         }
       }

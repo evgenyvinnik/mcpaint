@@ -2,7 +2,9 @@
  * Individual chat message component.
  * Displays user or assistant messages with appropriate styling.
  * Shows command count for assistant messages with drawing commands.
+ * Includes expandable command list for debugging.
  */
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ChatMessage as ChatMessageType } from "../../types/ai";
 
@@ -23,6 +25,7 @@ export interface ChatMessageProps {
  */
 export function ChatMessage({ message }: ChatMessageProps) {
   const { t } = useTranslation();
+  const [isExpanded, setIsExpanded] = useState(false);
   const isUser = message.role === "user";
   const hasCommands = message.commands && message.commands.length > 0;
 
@@ -74,12 +77,61 @@ export function ChatMessage({ message }: ChatMessageProps) {
             fontSize: "10px",
             color: "#000000",
             marginTop: "2px",
-            fontStyle: "italic",
             paddingLeft: isUser ? "0" : "2px",
             paddingRight: isUser ? "2px" : "0",
           }}
         >
-          {t("{{count}} command executed", { count: message.commands!.length })}
+          <div
+            onClick={() => setIsExpanded(!isExpanded)}
+            style={{
+              cursor: "pointer",
+              fontStyle: "italic",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              userSelect: "none",
+            }}
+          >
+            <span style={{ fontFamily: "Marlett, monospace", fontSize: "8px" }}>
+              {isExpanded ? "▼" : "▶"}
+            </span>
+            {t("{{count}} command executed", { count: message.commands!.length })}
+          </div>
+          {isExpanded && (
+            <div
+              style={{
+                marginTop: "4px",
+                padding: "4px",
+                backgroundColor: "#ffffff",
+                border: "2px solid",
+                borderColor: "#808080 #dfdfdf #dfdfdf #808080",
+                boxShadow: "inset 1px 1px 0 #0a0a0a, inset -1px -1px 0 #ffffff",
+                maxHeight: "200px",
+                overflowY: "auto",
+                fontFamily: "monospace",
+                fontSize: "9px",
+                lineHeight: "1.4",
+              }}
+            >
+              {message.commands!.map((cmd, index) => (
+                <div
+                  key={index}
+                  style={{
+                    marginBottom: "2px",
+                    paddingBottom: "2px",
+                    borderBottom: index < message.commands!.length - 1 ? "1px solid #c0c0c0" : "none",
+                  }}
+                >
+                  <div style={{ fontWeight: "bold", color: "#000080" }}>
+                    {index + 1}. {cmd.tool}
+                  </div>
+                  <div style={{ paddingLeft: "12px", color: "#000000", wordBreak: "break-all" }}>
+                    {JSON.stringify(cmd.params, null, 0)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
