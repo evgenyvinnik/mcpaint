@@ -347,7 +347,7 @@ CURRENT CANVAS STATE:
             "anthropic-version": "2023-06-01",
           },
           body: JSON.stringify({
-            model: "claude-opus-4-5-20251101",
+            model: "claude-sonnet-4-6",
             max_tokens: 32768,
             system: contextPrompt,
             messages: claudeMessages,
