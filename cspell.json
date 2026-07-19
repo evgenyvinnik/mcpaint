@@ -15,7 +15,8 @@
 		"*.wav",
 		"*.psd",
 		"*.mp4",
-		"localization"
+		"localization",
+		"public/locales"
 	],
 	"words": [
 		"abcdefghijklmnopqrstuvwxyzabcdef",
