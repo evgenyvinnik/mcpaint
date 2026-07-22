@@ -69,7 +69,7 @@ export function useColorsMenuActions(params: UseColorsMenuActionsParams): Colors
   const colorsSaveColors = useCallback(async () => {
     try {
       const { downloadPalette } = await import("../utils/paletteFormats");
-      await downloadPalette(palette, "palette.gpl", "gpl");
+      downloadPalette(palette, "palette.gpl", "gpl");
     } catch (error) {
       alert(`Failed to save palette: ${error instanceof Error ? error.message : "Unknown error"}`);
     }

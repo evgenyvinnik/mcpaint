@@ -5,7 +5,10 @@
                 "moduleResolution": "node", // Needed for resolving CommonJS modules used by build tools
 	},
 	"include": [
-		"src/**/*",
+		// The React app (src/react, src/new) is type-checked by tsconfig.json,
+		// which sets `jsx`. This project only covers ambient globals and the
+		// build-tool/localization scripts, so it must not sweep in .tsx files.
+		"src/globals.d.ts",
 		"localization/*.js",
 		"lib/os-gui/os-gui.d.ts"
 	]
