@@ -1,84 +1,23 @@
 /**
- * TypeScript types and interfaces for AI integration
- * Defines all drawing commands, SSE events, and chat message structures
- * Based on the architecture defined in docs/AI.md
+ * Drawing command definitions for AI integration
+ * Every tool the AI can invoke, plus the `DrawingCommand` union that ties them
+ * together. Based on the architecture defined in docs/AI.md
  */
 
-// ═══════════════════════════════════════════════════════════════════════════
-// COORDINATE AND POINT TYPES
-// ═══════════════════════════════════════════════════════════════════════════
-
-/**
- * A point on the canvas with x,y coordinates
- */
-export interface Point {
-  x: number;
-  y: number;
-}
-
-/**
- * Common fill modes for shape tools
- */
-export type FillMode = "outline" | "filled" | "filled_with_outline";
-
-/**
- * Brush/eraser shapes
- */
-export type BrushShapeType = "round" | "square" | "forward_slash" | "back_slash";
-
-/**
- * Target for transform operations
- */
-export type TransformTarget = "selection" | "canvas";
-
-/**
- * Color target (primary or secondary)
- */
-export type ColorTarget = "primary" | "secondary";
-
-/**
- * Selection mode
- */
-export type SelectionMode = "opaque" | "transparent";
-
-/**
- * Canvas anchor position for resize operations
- */
-export type CanvasAnchor =
-  | "top-left"
-  | "top"
-  | "top-right"
-  | "left"
-  | "center"
-  | "right"
-  | "bottom-left"
-  | "bottom"
-  | "bottom-right";
-
-/**
- * Image format types
- */
-export type ImageFormat = "png" | "jpg" | "bmp" | "gif";
-
-/**
- * Palette format types
- */
-export type PaletteFormat = "pal" | "gpl" | "act" | "aco" | "colors";
-
-/**
- * Palette presets
- */
-export type PalettePreset = "windows" | "web_safe" | "grayscale" | "pastel" | "vibrant";
-
-/**
- * Canvas units
- */
-export type CanvasUnits = "pixels" | "inches" | "cm";
-
-/**
- * Color mode
- */
-export type ColorMode = "color" | "black_and_white";
+import type {
+  BrushShapeType,
+  CanvasAnchor,
+  CanvasUnits,
+  ColorMode,
+  ColorTarget,
+  FillMode,
+  ImageFormat,
+  PaletteFormat,
+  PalettePreset,
+  Point,
+  SelectionMode,
+  TransformTarget,
+} from "./primitives";
 
 // ═══════════════════════════════════════════════════════════════════════════
 // FREEFORM DRAWING COMMANDS
@@ -1000,161 +939,3 @@ export type DrawingCommand =
  * All possible tool names
  */
 export type ToolName = DrawingCommand["tool"];
-
-// ═══════════════════════════════════════════════════════════════════════════
-// SSE EVENT TYPES
-// ═══════════════════════════════════════════════════════════════════════════
-
-/**
- * Token event - partial AI text response
- */
-export interface TokenEvent {
-  type: "token";
-  content: string;
-}
-
-/**
- * Commands event - drawing commands from tool invocation
- */
-export interface CommandsEvent {
-  type: "commands";
-  commands: DrawingCommand[];
-}
-
-/**
- * Progress event - drawing progress update
- */
-export interface ProgressEvent {
-  type: "progress";
-  current: number;
-  total: number;
-}
-
-/**
- * Done event - completion with full message
- */
-export interface DoneEvent {
-  type: "done";
-  message?: string;
-}
-
-/**
- * Error event - error notification
- */
-export interface ErrorEvent {
-  type: "error";
-  message: string;
-}
-
-/**
- * Union type of all SSE events
- */
-export type SSEEvent = TokenEvent | CommandsEvent | ProgressEvent | DoneEvent | ErrorEvent;
-
-// ═══════════════════════════════════════════════════════════════════════════
-// CHAT MESSAGE TYPES
-// ═══════════════════════════════════════════════════════════════════════════
-
-/**
- * Chat message role
- */
-export type ChatRole = "user" | "assistant";
-
-/**
- * Chat message interface
- */
-export interface ChatMessage {
-  /** Unique message ID */
-  id: string;
-  /** Message role (user or assistant) */
-  role: ChatRole;
-  /** Message text content */
-  content: string;
-  /** Associated drawing commands (for assistant messages) */
-  commands?: DrawingCommand[];
-  /** Message timestamp */
-  timestamp: number;
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// API REQUEST/RESPONSE TYPES
-// ═══════════════════════════════════════════════════════════════════════════
-
-/**
- * Current color state for API context
- */
-export interface ColorState {
-  primary: string;
-  secondary: string;
-}
-
-/**
- * AI API request body
- */
-export interface AIDrawRequest {
-  /** Chat message history */
-  messages: Array<{
-    role: ChatRole;
-    content: string;
-  }>;
-  /** Current canvas dimensions */
-  canvasWidth: number;
-  canvasHeight: number;
-  /** Current color state */
-  currentColors: ColorState;
-}
-
-/**
- * AI API response (for non-streaming)
- */
-export interface AIDrawResponse {
-  /** AI response text */
-  message: string;
-  /** Drawing commands to execute */
-  commands: DrawingCommand[];
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
-// COMMAND EXECUTOR TYPES
-// ═══════════════════════════════════════════════════════════════════════════
-
-/**
- * Command execution status
- */
-export type CommandExecutionStatus = "pending" | "executing" | "completed" | "failed" | "cancelled";
-
-/**
- * Command execution result
- */
-export interface CommandExecutionResult {
-  /** Command that was executed */
-  command: DrawingCommand;
-  /** Execution status */
-  status: CommandExecutionStatus;
-  /** Error message if failed */
-  error?: string;
-  /** Execution duration in ms */
-  duration?: number;
-}
-
-/**
- * Command executor configuration
- */
-export interface CommandExecutorConfig {
-  /** Delay between commands in ms (for animation) */
-  animationDelay: number;
-  /** Whether to skip animation */
-  skipAnimation: boolean;
-}
-
-/**
- * Execution progress state
- */
-export interface ExecutionProgress {
-  /** Current command index */
-  current: number;
-  /** Total number of commands */
-  total: number;
-  /** Currently executing command */
-  currentCommand?: DrawingCommand;
-}

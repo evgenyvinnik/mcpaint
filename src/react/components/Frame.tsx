@@ -1,3 +1,6 @@
+// Menu labels embed "&" keyboard-mnemonic markers, which split words for the
+// spell checker (e.g. "Recen&t", "Clea&r", "Pr&eferences").
+// cspell:ignore Clea Recen eferences
 import { CSSProperties, ReactNode, useEffect, useMemo, useRef } from "react";
 import "../../../lib/os-gui/MenuBar.js";
 import { DEFAULT_CANVAS_HEIGHT, DEFAULT_CANVAS_WIDTH } from "../constants/canvas";

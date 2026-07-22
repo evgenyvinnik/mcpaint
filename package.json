@@ -84,6 +84,7 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/dom-speech-recognition": "^0.0.9",
     "@types/jquery": "^3.5.34",
+    "@types/node": "^26.1.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/wicg-file-system-access": "^2023.10.7",
