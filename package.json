@@ -80,6 +80,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.59.1",
+    "@rolldown/plugin-babel": "^0.2.3",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/dom-speech-recognition": "^0.0.9",
     "@types/jquery": "^4.0.1",
@@ -88,7 +89,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/wicg-file-system-access": "^2023.10.7",
     "@types/youtube": "^0.2.0",
-    "@vitejs/plugin-react": "^5.2.0",
+    "@vitejs/plugin-react": "^6.0.4",
     "babel-plugin-react-compiler": "^1.0.0",
     "cspell-cli": "^10.0.1",
     "eslint": "^10.2.0",
@@ -103,8 +104,8 @@
     "rtlcss": "^4.3.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.65.0",
-    "vite": "^7.3.2",
-    "vite-plugin-static-copy": "^3.4.0"
+    "vite": "^8.1.5",
+    "vite-plugin-static-copy": "^4.1.1"
   },
   "scripts": {
     "lint-cspell": "cspell-cli lint .",

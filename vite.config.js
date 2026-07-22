@@ -38,6 +38,11 @@ export default defineConfig({
 	build: {
 		outDir: "dist",
 		emptyOutDir: true,
+		// Vite 8 defaults CSS minification to Lightning CSS, which rejects
+		// valid-in-browsers vendor selectors like
+		// `::-webkit-scrollbar-button:not(.disabled):hover:active` used by the
+		// vendored os-gui/98.css. Keep the more lenient esbuild minifier.
+		cssMinify: "esbuild",
 		rollupOptions: {
 			input: htmlEntries,
 		},
