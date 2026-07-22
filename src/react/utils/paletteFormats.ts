@@ -560,13 +560,13 @@ export function exportPalette(colors: string[], formatId: string, name?: string)
  * @param colors - Array of color strings (hex or rgb format)
  * @param filename - Desired filename for download
  * @param formatId - Optional format override (otherwise determined from extension)
- * @returns Promise that resolves when download is initiated
+ * @returns Nothing; triggers a browser download as a side effect
  *
  * @example
- * await downloadPalette(colors, "mypalette.gpl");
- * await downloadPalette(colors, "colors.pal", "jasc");
+ * downloadPalette(colors, "mypalette.gpl");
+ * downloadPalette(colors, "colors.pal", "jasc");
  */
-export async function downloadPalette(colors: string[], filename: string, formatId?: string): Promise<void> {
+export function downloadPalette(colors: string[], filename: string, formatId?: string): void {
   // Determine format from filename or default to hex
   const ext = filename.match(/\.([^.]+)$/)?.[1]?.toLowerCase();
   let format = formatId || "hex";
