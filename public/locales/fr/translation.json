@@ -619,5 +619,21 @@
 	"Shows or hides the AI assistant panel.": "Affiche ou masque le panneau de l'assistant IA.",
 	"Paint": "Paint",
 	"Save changes to {{filename}}?": "Enregistrer les modifications de {{filename}} ?",
-	"Untitled": "Sans titre"
+	"Manages storage of previously created or opened pictures.": "Gère le stockage des images précédemment créées ou ouvertes.",
+	"Zooms the picture to fit within the view.": "Ajuste l'image pour qu'elle tienne dans la vue.",
+	"Makes the application take up the entire screen.": "Fait occuper tout l'écran à l'application.",
+	"Clears the picture.": "Efface l'image.",
+	"Crops the picture to the current selection.": "Rogne l'image selon la sélection actuelle.",
+	"Displays information about this application.": "Affiche des informations sur cette application.",
+	"Thinking...": "Réflexion...",
+	"{{count}} command executed_one": "{{count}} commande exécutée",
+	"{{count}} command executed_other": "{{count}} commandes exécutées",
+	"Something went wrong:": "Une erreur s'est produite :",
+	"Font settings": "Paramètres de police",
+	"Font size in points": "Taille de police en points",
+	"Local font access denied or unavailable.": "Accès aux polices locales refusé ou indisponible.",
+	"Using {{count}} font_one": "Utilisation de {{count}} police",
+	"Using {{count}} font_other": "Utilisation de {{count}} polices",
+	"Font family": "Famille de police",
+	"Font size": "Taille de police"
 }

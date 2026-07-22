@@ -19,8 +19,7 @@
 		"localization",
 		"public/locales", // Translated UI strings for 26 languages (not English)
 		"playwright-report", // Generated Playwright HTML report
-		"test-results", // Generated Playwright test artifacts
-		"scripts/tmp-add-translations.cjs" // One-off localization data script
+		"test-results" // Generated Playwright test artifacts
 	],
 	"words": [
 		"abcdefghijklmnopqrstuvwxyzabcdef",
