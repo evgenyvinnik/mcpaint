@@ -11,14 +11,5 @@
 		"src/globals.d.ts",
 		"localization/*.js",
 		"lib/os-gui/os-gui.d.ts"
-	],
-	"exclude": [
-		"node_modules",
-		"dist",
-		// The React/TS app is type-checked separately via tsconfig.json
-		// (`npm run lint-tsc-react`). Excluding it here keeps this legacy-JS
-		// check from erroring on JSX and duplicate DOM lib declarations.
-		"src/react",
-		"src/new"
 	]
 }
