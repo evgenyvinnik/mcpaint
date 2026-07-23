@@ -283,8 +283,8 @@ export function SelectionHandles({ selection, onResize, containerRef, handleSize
 
   // Calculate handle positions
   const getHandleStyle = (xAxis: HandleAxis, yAxis: HandleAxis): CSSProperties => {
-    let left: number;
-    let top: number;
+    let left = scaledX;
+    let top = scaledY;
 
     // X position
     if (xAxis === HANDLE_START) {
