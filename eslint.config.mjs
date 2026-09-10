@@ -233,7 +233,7 @@ export default [
         },
         {
                 "files": [
-                        "vite.config.js",
+                        "vite.config.mjs",
                         "vite.config.mjs",
                 ],
                 "languageOptions": {

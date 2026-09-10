@@ -1,12 +1,14 @@
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
 const htmlEntries = {
-	main: resolve(__dirname, "index.html"),
-	about: resolve(__dirname, "about.html"),
-	privacy: resolve(__dirname, "privacy.html"),
+	main: resolve(import.meta.dirname, "index.html"),
+	about: resolve(import.meta.dirname, "about.html"),
+	jspaintAlternative: resolve(import.meta.dirname, "jspaint-alternative.html"),
+	privacy: resolve(import.meta.dirname, "privacy.html"),
 };
 
 const staticAssets = [
@@ -38,16 +40,13 @@ export default defineConfig({
 	build: {
 		outDir: "dist",
 		emptyOutDir: true,
-		rollupOptions: {
+		rolldownOptions: {
 			input: htmlEntries,
 		},
 	},
 	plugins: [
-		react({
-			babel: {
-				plugins: [["babel-plugin-react-compiler", {}]],
-			},
-		}),
+		react(),
+		babel({ presets: [reactCompilerPreset()] }),
 		viteStaticCopy({
 			targets: staticAssets,
 		}),

@@ -2,6 +2,7 @@
 // spell checker (e.g. "Recen&t", "Clea&r", "Pr&eferences").
 // cspell:ignore Clea Recen eferences
 import { CSSProperties, ReactNode, useEffect, useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import "../../../lib/os-gui/MenuBar.js";
 import { DEFAULT_CANVAS_HEIGHT, DEFAULT_CANVAS_WIDTH } from "../constants/canvas";
 
@@ -218,6 +219,7 @@ export function Frame({
   style,
   magnification = 1,
 }: FrameProps) {
+  const { t } = useTranslation();
   const verticalRef = useRef(null);
 
   useEffect(() => {
@@ -292,8 +294,13 @@ export function Frame({
         </div>
         {resolvedBottom}
         <div className="status-area">
-          <div className="status-text status-field inset-shallow" aria-live="polite">
-            {statusText}
+          <div className="status-text status-field inset-shallow">
+            <span className="status-message" aria-live="polite">
+              {statusText}
+            </span>
+            <a className="about-page-link" href="/about" target="_blank" rel="noopener noreferrer">
+              {t("About Paint")}
+            </a>
           </div>
           <div className="status-coordinates status-field inset-shallow">{statusPosition}</div>
           <div className="status-coordinates status-field inset-shallow">{statusSize}</div>

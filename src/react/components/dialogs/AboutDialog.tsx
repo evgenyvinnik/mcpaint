@@ -41,6 +41,10 @@ export function AboutDialog({ isOpen, onClose }: AboutDialogProps) {
             {t("Homepage")}
           </a>
           {" · "}
+          <a href="/about" target="_blank" rel="noopener noreferrer">
+            {t("About Paint")}
+          </a>
+          {" · "}
           <a
             href="https://github.com/evgenyvinnik/mcpaint/blob/master/LICENSE.txt"
             target="_blank"

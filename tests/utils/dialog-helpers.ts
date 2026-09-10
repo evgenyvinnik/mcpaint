@@ -12,10 +12,10 @@ export async function openDialogFromMenu(page: Page, menuName: string, menuItem:
   await page.locator(`.menu-button:has-text("${menuName}")`).click();
 
   // Wait for menu popup to be visible
-  await page.waitForSelector(".menu-popup", { state: "visible" });
+  await page.waitForSelector(".menu-popup:visible", { state: "visible" });
 
   // Click the menu item
-  await page.locator(`.menu-popup .menu-item:has-text("${menuItem}")`).first().click();
+  await page.locator(`.menu-popup:visible .menu-item:has-text("${menuItem}")`).first().click();
 
   // Wait for dialog to appear
   const dialog = page.locator(".window").last();
@@ -42,14 +42,13 @@ export async function openDialogFromSubmenu(
   await page.locator(`.menu-button:has-text("${menuName}")`).click();
 
   // Wait for menu popup to be visible
-  await page.waitForSelector(".menu-popup", { state: "visible" });
+  await page.waitForSelector(".menu-popup:visible", { state: "visible" });
 
   // Hover over submenu item to open submenu
-  await page.locator(`.menu-popup .menu-item:has-text("${submenuName}")`).first().hover();
+  await page.locator(`.menu-popup:visible .menu-item:has-text("${submenuName}")`).first().hover();
 
   // Wait for submenu to appear and click the item
-  await page.waitForTimeout(100);
-  await page.locator(`.menu-popup .menu-item:has-text("${menuItem}")`).first().click();
+  await page.locator(`.menu-popup:visible .menu-item:has-text("${menuItem}")`).first().click();
 
   // Wait for dialog to appear
   const dialog = page.locator(".window").last();
