@@ -355,7 +355,7 @@ See [CLAUDE.md](CLAUDE.md) for architecture details.
 
 [Clone the repo.](https://help.github.com/articles/cloning-a-repository/)
 
-Install [Node.js][] if you don't have it, then open up a command prompt / terminal in the project directory.
+Use [Node.js][] 22 (22.18 or newer). Run `nvm install` and `nvm use` if you use nvm; the repository's `.nvmrc` and CI use Node 22.
 
 ### Quality Assurance
 
@@ -366,6 +366,10 @@ Run `npm run format` to automatically fix formatting issues, or `npx eslint --fi
 The formatting rules are configured for compatibility with VS Code's built-in formatter.
 
 Run `npm test` to run browser-based tests with Playwright.
+
+After installing or updating Playwright, run `npx playwright install chromium` to install its matching browser.
+
+Run `npm run test:production -- tests/app-smoke.spec.ts tests/undo-redo.spec.ts` to check the production build, static assets, localization, persistence, and undo/redo.
 
 Run `npm run test:update-snapshots` to update visual snapshots after intentional changes.
 
@@ -383,7 +387,6 @@ See [Control Directives](https://rtlcss.com/learn/usage-guide/control-directives
 There is a VS Code launch task for attaching to Chrome for debugging.
 See `.vscode/launch.json` for usage instructions.
 
-[Live Server]: https://github.com/1j01/live-server
 [Node.js]: https://nodejs.org/
 
 ## Deployment

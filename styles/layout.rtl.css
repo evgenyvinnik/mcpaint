@@ -190,11 +190,24 @@ html, body, .jspaint {
 	cursor: default;
 }
 .status-text {
+	display: flex;
+	align-items: center;
+	gap: 8px;
 	flex-basis: auto;
 	flex-grow: 1;
-	flex-shrink: 0;
+	flex-shrink: 1;
+	min-width: 0;
 	padding-left: 2px;
 	overflow: hidden;
+}
+.status-message {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.about-page-link {
+	flex-shrink: 0;
+	margin-inline-start: auto;
+	color: inherit;
 }
 .status-coordinates {
 	flex: 0 0 114px;

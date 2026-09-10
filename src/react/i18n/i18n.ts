@@ -6,6 +6,38 @@ import HttpBackend from "i18next-http-backend";
 // Initialize i18next for MCPaint
 // Loads translations from /locales/[lang]/translation.json
 
+/**
+ * Apply the selected language and its layout direction to the document.
+ * The RTL styles are copied as static assets in both development and production.
+ * @param language - Resolved language code
+ */
+function applyDocumentLanguage(language: string): void {
+  if (typeof document === "undefined") return;
+
+  const direction = i18n.dir(language);
+  document.documentElement.lang = language;
+  document.documentElement.dir = direction;
+
+  const rtlStyles = [
+    "/styles/layout.rtl.css",
+    "/lib/os-gui/build/layout.rtl.css",
+    "/lib/98.css/98.custom-build.rtl.css",
+  ];
+
+  document.querySelectorAll("link[data-rtl-layout]").forEach((link) => link.remove());
+  if (direction === "rtl") {
+    for (const href of rtlStyles) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      link.dataset.rtlLayout = "";
+      document.head.append(link);
+    }
+  }
+}
+
+i18n.on("languageChanged", applyDocumentLanguage);
+
 i18n
   // Load translations via HTTP
   .use(HttpBackend)
@@ -39,7 +71,9 @@ i18n
     // Detection options
     detection: {
       // Order of language detection
-      order: ["localStorage", "navigator", "htmlTag"],
+      // The HTML template is always English; fallbackLng handles the fallback
+      // without letting that exact match override a regional browser language.
+      order: ["localStorage", "navigator"],
 
       // Keys for localStorage
       lookupLocalStorage: "mcpaint-language",

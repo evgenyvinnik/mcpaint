@@ -51,3 +51,148 @@ index 7c785c54..bb776126 100644
  				}
  			}
  		}
+diff --git a/lib/os-gui/MenuBar.js b/lib/os-gui/MenuBar.js
+index d853c048..d97da13a 100644
+--- a/lib/os-gui/MenuBar.js
++++ b/lib/os-gui/MenuBar.js
+@@ -1194,4 +1194,4 @@ exports.AccessKeys = AccessKeys;
+ exports.MENU_DIVIDER = MENU_DIVIDER;
+ 
+ // @ts-ignore
+-})(typeof module !== "undefined" ? module.exports : window);
++})(typeof window !== "undefined" ? window : module.exports);
+diff --git a/lib/os-gui/build/windows-98.css b/lib/os-gui/build/windows-98.css
+index 78a0e21b..7a0fcf53 100644
+--- a/lib/os-gui/build/windows-98.css
++++ b/lib/os-gui/build/windows-98.css
+@@ -771,18 +771,18 @@ so I think I'll imitate that. (I might change it later) */
+ 	box-sizing: border-box;
+ }
+ 
+-::-webkit-scrollbar-button:not(.disabled):hover:active {
++::-webkit-scrollbar-button:not(:disabled):hover:active {
+ 	border: 1px solid rgb(128, 128, 128);
+ 	border: 1px solid var(--ButtonShadow);
+ 	box-shadow: none;
+ }
+ 
+-::-webkit-scrollbar-button.disabled {
++::-webkit-scrollbar-button:disabled {
+ 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAJCAYAAABaMo5wAAAAYElEQVQ4T2NkGGSAcZC5h4EmDmpoaPjf0NBAlNnoauGaQBLooYXLUEIWwswi5Chs6lB8gewofI6BOZwWajCCFZ/viQ1FqoUQtRI4oShFtgdnGqKWYyg1h6icQKklpOgHAM9mQArEvm5+AAAAAElFTkSuQmCC"), url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAJCAYAAABaMo5wAAAAYElEQVQ4T2NkGGSAcZC5h4EmDvr///9/RkZGosxGVwvXBJJADy1chhKyEGYWIUdhU4fiC2RH4XMMzOG0UIMRrPh8T2woUi2EqJXACUUpsj040xC1HEOpOUTlBEotIUU/AKXFQAqyTJ6DAAAAAElFTkSuQmCC");
+ 	background-image: var(--scrollbar-arrows-GrayText), var(--scrollbar-arrows-ButtonHilight);
+ }
+ 
+-::-webkit-scrollbar-button.horizontal.decrement.disabled {
++::-webkit-scrollbar-button:horizontal:decrement:disabled {
+ 	background-position: /* left arrow */
+ 		calc(9px * -3 + 1px) 1px,
+ 		calc(9px * -3 + 2px) 2px;
+@@ -791,7 +791,7 @@ so I think I'll imitate that. (I might change it later) */
+ 		calc(var(--scrollbar-button-inner-size) * -3 + 2px) 2px;
+ }
+ 
+-::-webkit-scrollbar-button.horizontal.increment.disabled {
++::-webkit-scrollbar-button:horizontal:increment:disabled {
+ 	background-position: /* right arrow */
+ 		calc(9px * -2 + 1px) 1px,
+ 		calc(9px * -2 + 2px) 2px;
+@@ -800,7 +800,7 @@ so I think I'll imitate that. (I might change it later) */
+ 		calc(var(--scrollbar-button-inner-size) * -2 + 2px) 2px;
+ }
+ 
+-::-webkit-scrollbar-button.vertical.decrement.disabled {
++::-webkit-scrollbar-button:vertical:decrement:disabled {
+ 	background-position: /* up arrow */
+ 		calc(9px * -1 + 1px) 1px,
+ 		calc(9px * -1 + 2px) 2px;
+@@ -809,7 +809,7 @@ so I think I'll imitate that. (I might change it later) */
+ 		calc(var(--scrollbar-button-inner-size) * -1 + 2px) 2px;
+ }
+ 
+-::-webkit-scrollbar-button.vertical.increment.disabled {
++::-webkit-scrollbar-button:vertical:increment:disabled {
+ 	background-position: /* down arrow */
+ 		calc(9px * -0 + 1px) 1px,
+ 		calc(9px * -0 + 2px) 2px;
+@@ -818,25 +818,25 @@ so I think I'll imitate that. (I might change it later) */
+ 		calc(var(--scrollbar-button-inner-size) * -0 + 2px) 2px;
+ }
+ 
+-::-webkit-scrollbar-button.horizontal.decrement {
++::-webkit-scrollbar-button:horizontal:decrement {
+ 	background-position: calc(9px * -3 + 1px) 1px;
+ 	background-position: calc(var(--scrollbar-button-inner-size) * -3 + 1px) 1px;
+ 	/* left */
+ }
+ 
+-::-webkit-scrollbar-button.horizontal.increment {
++::-webkit-scrollbar-button:horizontal:increment {
+ 	background-position: calc(9px * -2 + 1px) 1px;
+ 	background-position: calc(var(--scrollbar-button-inner-size) * -2 + 1px) 1px;
+ 	/* right */
+ }
+ 
+-::-webkit-scrollbar-button.vertical.decrement {
++::-webkit-scrollbar-button:vertical:decrement {
+ 	background-position: calc(9px * -1 + 1px) 1px;
+ 	background-position: calc(var(--scrollbar-button-inner-size) * -1 + 1px) 1px;
+ 	/* up */
+ }
+ 
+-::-webkit-scrollbar-button.vertical.increment {
++::-webkit-scrollbar-button:vertical:increment {
+ 	background-position: calc(9px * -0 + 1px) 1px;
+ 	background-position: calc(var(--scrollbar-button-inner-size) * -0 + 1px) 1px;
+ 	/* down */
+@@ -884,7 +884,7 @@ so I think I'll imitate that. (I might change it later) */
+ 		calc(var(--scrollbar-button-inner-size) * -0 + 2px) 2px;
+ }
+ 
+-::-webkit-scrollbar-button:horizontal:decrement.disabled {
++::-webkit-scrollbar-button:horizontal:decrement:disabled {
+ 	background-position: /* left arrow */
+ 		calc(9px * -3 + 1px) 1px,
+ 		calc(9px * -3 + 2px) 2px;
+@@ -898,7 +898,7 @@ so I think I'll imitate that. (I might change it later) */
+ 	background-position: calc(var(--scrollbar-button-inner-size) * -3 + 1px) 1px;
+ 	/* left */
+ }
+-::-webkit-scrollbar-button:horizontal:increment.disabled {
++::-webkit-scrollbar-button:horizontal:increment:disabled {
+ 	background-position: /* right arrow */
+ 		calc(9px * -2 + 1px) 1px,
+ 		calc(9px * -2 + 2px) 2px;
+@@ -911,7 +911,7 @@ so I think I'll imitate that. (I might change it later) */
+ 	background-position: calc(var(--scrollbar-button-inner-size) * -2 + 1px) 1px;
+ 	/* right */
+ }
+-::-webkit-scrollbar-button:vertical:decrement.disabled {
++::-webkit-scrollbar-button:vertical:decrement:disabled {
+ 	background-position: /* up arrow */
+ 		calc(9px * -1 + 1px) 1px,
+ 		calc(9px * -1 + 2px) 2px;
+@@ -924,7 +924,7 @@ so I think I'll imitate that. (I might change it later) */
+ 	background-position: calc(var(--scrollbar-button-inner-size) * -1 + 1px) 1px;
+ 	/* up */
+ }
+-::-webkit-scrollbar-button:vertical:increment.disabled {
++::-webkit-scrollbar-button:vertical:increment:disabled {
+ 	background-position: /* down arrow */
+ 		calc(9px * -0 + 1px) 1px,
+ 		calc(9px * -0 + 2px) 2px;
+@@ -947,7 +947,7 @@ so I think I'll imitate that. (I might change it later) */
+ 	/* background-attachment: fixed; breaks the checkered background in chrome */
+ }
+ 
+-::-webkit-scrollbar-track-piece.increment {
++::-webkit-scrollbar-track-piece:increment {
+ 	background-position: bottom;
+ }
+ ::-webkit-scrollbar-track-piece:increment {
+@@ -960,4 +960,4 @@ so I think I'll imitate that. (I might change it later) */
+ 	display: none;
+ }
+ 
+-/*# sourceMappingURL=windows-98.css.map */
+\ No newline at end of file
++/*# sourceMappingURL=windows-98.css.map */

@@ -182,6 +182,8 @@ export function useCanvasLifecycle(canvasRef: RefObject<HTMLCanvasElement>) {
       return;
     }
 
+    let disposed = false;
+
     // Async initialization function
     const initializeCanvas = async () => {
       const tokenAtStart = restoreToken;
@@ -246,12 +248,14 @@ export function useCanvasLifecycle(canvasRef: RefObject<HTMLCanvasElement>) {
 
       // Priority 2: Load from IndexedDB (page refresh) - only on first mount
       if (!loadedFromIndexedDB) {
-        loadedFromIndexedDB = true;
         const persistedCanvas = await loadCanvasFromIndexedDB();
 
-        if (tokenAtStart !== restoreToken) {
+        if (disposed || tokenAtStart !== restoreToken) {
           return;
         }
+        // Mark the load complete only after it resolves on the active effect.
+        // Strict Mode may restart the effect while the first read is pending.
+        loadedFromIndexedDB = true;
 
         // CRITICAL: Check if user drew during the IndexedDB await BEFORE restoring
         // The initial content check only sampled the top-left corner, but the user
@@ -356,6 +360,7 @@ export function useCanvasLifecycle(canvasRef: RefObject<HTMLCanvasElement>) {
     //
     // See top-of-file documentation for detailed explanation.
     return () => {
+      disposed = true;
       // Only save if we actually have valid initialized content
       if (canvasInitialized) {
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);

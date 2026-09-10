@@ -1,11 +1,11 @@
 # robots.txt for MCPaint
-# https://mcpaint.vercel.app
+# https://www.mcpaint.app
 
 User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://mcpaint.vercel.app/sitemap.xml
+Sitemap: https://www.mcpaint.app/sitemap.xml
 
 # Crawl-delay for polite crawling
 Crawl-delay: 1

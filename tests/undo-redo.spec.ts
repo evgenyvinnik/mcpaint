@@ -1,13 +1,5 @@
 import { test, expect } from "@playwright/test";
-import {
-  waitForAppLoaded,
-  drawOnCanvas,
-  selectToolByIndex,
-  canvasHasContent,
-  getCanvasDataUrl,
-  undo,
-  redo,
-} from "./utils/test-helpers";
+import { waitForAppLoaded, drawOnCanvas, selectToolByIndex, getCanvasDataUrl, undo, redo } from "./utils/test-helpers";
 
 test.describe("Undo/Redo Functionality", () => {
   test.beforeEach(async ({ page }) => {
@@ -144,21 +136,29 @@ test.describe("Undo/Redo Functionality", () => {
     expect(afterRedo).not.toBe(afterFirstStroke);
   });
 
-  test("status bar shows undo availability", async ({ page }) => {
-    const statusArea = page.locator(".status-area");
+  test("Edit menu enables Undo after drawing", async ({ page }) => {
+    const editMenu = page.getByRole("menuitem", { name: "Edit", exact: true });
+    const undoItem = page.locator('.menu-popup:visible [role="menuitem"]').filter({ hasText: /^Undo/ });
+    const redoItem = page.locator('.menu-popup:visible [role="menuitem"]').filter({ hasText: /^Repeat/ });
+    const openEditMenu = async () => {
+      await editMenu.focus();
+      await page.keyboard.press("ArrowDown");
+    };
 
-    // Initially, no undo should be available
-    // (This depends on how the status bar is implemented)
+    await openEditMenu();
+    await expect(undoItem).toHaveAttribute("aria-disabled", "true");
+    await expect(redoItem).toHaveAttribute("aria-disabled", "true");
+    await page.keyboard.press("Escape");
 
-    // Select pencil and draw
     await selectToolByIndex(page, 6);
     await drawOnCanvas(page, {
       start: { x: 0.3, y: 0.3 },
       end: { x: 0.6, y: 0.6 },
     });
 
-    // Status should indicate undo is available (in the third status field)
-    await expect(statusArea).toContainText(/[Uu]ndo/);
+    await openEditMenu();
+    await expect(undoItem).toBeEnabled();
+    await expect(redoItem).toHaveAttribute("aria-disabled", "true");
   });
 
   test("keyboard shortcuts work for undo/redo", async ({ page }) => {

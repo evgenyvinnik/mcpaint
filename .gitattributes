@@ -1,0 +1,2 @@
+# Patch context intentionally contains leading spaces before tabs and blank lines.
+*.patch -whitespace

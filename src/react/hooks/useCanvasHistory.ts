@@ -11,6 +11,7 @@
 import { useCallback, RefObject } from "react";
 import { useCanvasDimensions } from "../context/state/useCanvasDimensions";
 import { useTreeHistory } from "../context/state/useTreeHistory";
+import { useHistoryStore } from "../context/state/historyStore";
 
 /**
  * Parameters for the canvas history hook
@@ -65,16 +66,12 @@ interface UseCanvasHistoryReturn {
  * if (canUndo) undo();
  */
 export function useCanvasHistory({ canvasRef }: UseCanvasHistoryParams): UseCanvasHistoryReturn {
-  const {
-    historyTree,
-    getRoot,
-    goToNode,
-    undo: undoTree,
-    redo: redoTree,
-    canUndo,
-    canRedo,
-    pushState: pushTreeState,
-  } = useTreeHistory();
+  const { historyTree, getRoot, goToNode, undo: undoTree, redo: redoTree, pushState: pushTreeState } = useTreeHistory();
+
+  // The tree mutates in place; subscribe to availability instead of caching calls
+  // to stable action functions when React Compiler optimizes this hook.
+  const canUndo = useHistoryStore((state) => state.canUndo());
+  const canRedo = useHistoryStore((state) => state.canRedo());
 
   const { setCanvasSize } = useCanvasDimensions();
 
@@ -86,16 +83,19 @@ export function useCanvasHistory({ canvasRef }: UseCanvasHistoryParams): UseCanv
    * Captures the canvas ImageData and pushes to history tree
    * @param operationName - Name of the operation for display in history dialog
    */
-  const saveHistoryState = useCallback((operationName: string = "Edit") => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return;
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const saveHistoryState = useCallback(
+    (operationName: string = "Edit") => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      if (!ctx) return;
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-    // Save to tree history (used by Canvas component and dialogs)
-    pushTreeState(imageData, operationName);
-  }, [canvasRef, pushTreeState]);
+      // Save to tree history (used by Canvas component and dialogs)
+      pushTreeState(imageData, operationName);
+    },
+    [canvasRef, pushTreeState],
+  );
 
   /**
    * Undo last action and restore canvas to previous state
@@ -155,8 +155,8 @@ export function useCanvasHistory({ canvasRef }: UseCanvasHistoryParams): UseCanv
     saveHistoryState,
     undo,
     redo,
-    canUndo: canUndo(),
-    canRedo: canRedo(),
+    canUndo,
+    canRedo,
     pushTreeState,
     getRoot,
     goToNode,

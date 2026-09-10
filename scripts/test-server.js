@@ -8,8 +8,8 @@ const __dirname = dirname(__filename);
 const root = resolve(__dirname, '..');
 
 async function startTestServer() {
-	// Load the vite.config.js
-	const configFile = resolve(root, 'vite.config.js');
+	// Load the Vite configuration
+	const configFile = resolve(root, 'vite.config.mjs');
 
 	const server = await createServer({
 		configFile,

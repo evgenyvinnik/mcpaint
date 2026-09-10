@@ -15,7 +15,6 @@ import { useSettingsStore } from "../react/context/state/settingsStore";
 import { useToolStore } from "../react/context/state/toolStore";
 import { TOOL_IDS } from "../react/context/state/types";
 import { useUIStore } from "../react/context/state/uiStore";
-import { useApp } from "../react/context/state/useApp";
 import { useCanvasDimensions } from "../react/context/state/useCanvasDimensions";
 import { useColors } from "../react/context/state/useColors";
 import { useCursorPosition } from "../react/context/state/useCursorPosition";
@@ -107,13 +106,14 @@ function AppContent() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   // Use Zustand hooks instead of AppContext
-  const { state } = useApp();
   const { primaryColor, secondaryColor, palette, setPrimaryColor, setSecondaryColor } = useColors();
   const { selectedToolId, setTool } = useTool();
   const { cursorPosition } = useCursorPosition();
 
   // Use extracted hooks for canvas history and clipboard
-  const { saveHistoryState, undo, redo, canUndo, canRedo, getRoot, goToNode, rootNode } = useCanvasHistory({ canvasRef });
+  const { saveHistoryState, undo, redo, canUndo, canRedo, getRoot, goToNode, rootNode } = useCanvasHistory({
+    canvasRef,
+  });
 
   const { hasClipboard, hasSelection, selection, setSelection, clearSelection, copy, cut, paste } =
     useClipboardOperations();
@@ -308,7 +308,7 @@ function AppContent() {
   // Format selection or canvas size for status bar
   const sizeText = selection
     ? `${Math.abs(selection.width)}x${Math.abs(selection.height)}`
-    : `${state.canvasWidth}x${state.canvasHeight}`;
+    : `${canvasWidth}x${canvasHeight}`;
 
   // console.warn('[AppContent] 🎨 RENDER END - returning JSX');
 
